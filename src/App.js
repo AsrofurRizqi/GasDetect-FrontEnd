@@ -4,8 +4,10 @@ import './App.css';
 // import pages
 import Navbar from './components/navbar';
 import Landing from './pages/landingpage';
-import Login from './pages/login';
+import Login from './pages/loginpage';
 import Data from './pages/data';
+import Dashboard from "./pages/dashboard";
+import About from "./pages/about";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/" element={<Landing/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/data" element={<Data/>}/>
+        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/about" element={<About/>}/>
       </Routes>  
     </Router>
   );

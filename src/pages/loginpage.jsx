@@ -10,7 +10,7 @@ const Login = () => {
     return (
         <div className="flex justify-center items-center h-screen bg-gray-100">
             <div className="w-96 bg-white rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-bold mb-4">
+                <h2 className="text-2xl font-bold mb-4 text-center">
                     {isRegister ? 'Register' : 'Login'}
                 </h2>
                 <form>

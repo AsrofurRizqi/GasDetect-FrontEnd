@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-const DataPage = () => {
+const Data = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -38,4 +38,4 @@ const DataPage = () => {
     );
 };
 
-export default DataPage;
+export default Data;

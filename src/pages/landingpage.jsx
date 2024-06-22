@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Navbar from '../components/navbar';  
+
 import Slider from '../components/slider';
 import Services from '../components/services';
 import Footer from '../components/footer';
@@ -9,6 +11,7 @@ import WhyUs from '../components/whyus';
 function LandingPage() {
     return (
         <div>
+            <Navbar />
             <Slider
                 images={[
                     'https://res.cloudinary.com/dkxt6mlnh/image/upload/v1718256218/ta/itvdjlvk8cjnihqfw2zw.png',

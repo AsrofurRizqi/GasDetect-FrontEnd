@@ -11,6 +11,7 @@ import About from "./pages/aboutpage";
 
 import Layout from "./components/admin/layout/layout";
 import DashboardAdmin from "./pages/admin/dashboardAdmin";
+import Registration from "./components/admin/regis/registration";
 import VerifyUsers from "./components/admin/users/users";
 import NotifPage from "./pages/admin/notifpage";
 
@@ -27,6 +28,7 @@ function App() {
 
         <Route  element={<Layout/>}>
           <Route path="/admin" element={<DashboardAdmin/>}/>
+          <Route path="/admin/registration" element={<Registration/>}/>
           <Route path="/admin/users" element={<VerifyUsers/>}/>
           <Route path="/admin/notif" element={<NotifPage/>}/>
         </Route>

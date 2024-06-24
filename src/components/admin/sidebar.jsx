@@ -4,6 +4,7 @@ import { FaRegWindowClose } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
 import { FaHome, FaUserSecret } from "react-icons/fa";
 import { MdEditNotifications } from "react-icons/md";
+import { IoIosCreate } from "react-icons/io";
 
 const Navside = ({ isOpen, toggleSidebar }) => {
     const navigate = useNavigate();
@@ -44,6 +45,10 @@ const Navside = ({ isOpen, toggleSidebar }) => {
                     <div onClick={() => handleLinkClick('/admin')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
                         <FaHome className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2 ">Home</span>
+                    </div>
+                    <div onClick={() => handleLinkClick('/admin/registration')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                        <IoIosCreate className='mt-1 m-2 transition duration-200 ease-in-out' />
+                        <span className="ml-2">Registration</span>
                     </div>
                     <div onClick={() => handleLinkClick('/admin/users')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
                         <FaUserSecret className='mt-1 m-2 transition duration-200 ease-in-out' />

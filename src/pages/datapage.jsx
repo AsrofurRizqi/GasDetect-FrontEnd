@@ -1,14 +1,15 @@
 import React from "react";
 import Navbar from "../components/navbar";
-import Login from "../components/login";
 
-const LoginPage = () => {
+import Data from "../components/data";
+
+const DataPage = () => {
     return (
         <div>
             <Navbar />
-            <Login />
+            <Data />
         </div>
     );
 }
 
-export default LoginPage;
+export default DataPage;

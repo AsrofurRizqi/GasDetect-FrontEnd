@@ -55,27 +55,39 @@ export const checkToken = async (token) => {
 }
 
 // user services
-export const changeProfile = async (name, email, password) => {
+export const changeProfile = async (name, email, password, authToken) => {
     try {
-        const response = await api.put('/user/profile', { name, email, password });
+        const response = await api.put('/user/profile', { name, email, password ,
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const changePassword = async (currentPassword, newPassword) => {
+export const changePassword = async (currentPassword, newPassword, authToken) => {
     try {
-        const response = await api.put('/user/password', { currentPassword, newPassword });
+        const response = await api.put('/user/password', { currentPassword, newPassword,
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+         });
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const getProfile = async () => {
+export const getProfile = async (authToken) => {
     try {
-        const response = await api.get('/user/profile');
+        const response = await api.get('/user/profile',{
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
@@ -83,27 +95,39 @@ export const getProfile = async () => {
 }
 
 // data services
-export const getData = async () => {
+export const getData = async (authToken) => {
     try {
-        const response = await api.get('/data');
+        const response = await api.get('/data',{
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const getByDevice = async (device) => {
+export const getByDevice = async (device, authToken) => {
     try {
-        const response = await api.get(`/data/${device}`);
+        const response = await api.get(`/data/${device}`,{
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const donwloadData = async () => {
+export const donwloadData = async (authToken) => {
     try {
-        const response = await api.get('/data/download');
+        const response = await api.get('/data/download',{
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
@@ -111,45 +135,66 @@ export const donwloadData = async () => {
 };
 
 // device services
-export const getUserDevices = async () => {
+export const getUserDevices = async (authToken) => {
     try {
-        const response = await api.get('/device');
+        const response = await api.get('/device',{
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const deviceDetail = async (device) => {
+export const deviceDetail = async (device,authToken) => {
     try {
-        const response = await api.get(`/device/${device}`);
+        const response = await api.get(`/device/${device}`,{
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const userAddDevice = async (device) => {
+export const userAddDevice = async (device, authToken) => {
     try {
-        const response = await api.post('/device', { device });
+        const response = await api.post('/device', { device }, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const userUpdateDevice = async (device, name) => {
+export const userUpdateDevice = async (device, name, authToken) => {
     try {
-        const response = await api.put(`/device/${device}`, { name });
+        const response = await api.put(`/device/${device}`, { name }, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
     }
 };
 
-export const userDeleteDevice = async (device) => {
+export const userDeleteDevice = async (device, authToken) => {
     try {
-        const response = await api.delete(`/device/${device}`);
+        const response = await api.delete(`/device/${device}`, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;
@@ -157,9 +202,13 @@ export const userDeleteDevice = async (device) => {
 };
 
 // notification services
-export const getUserNotifications = async () => {
+export const getUserNotifications = async (authToken) => {
     try {
-        const response = await api.get('/notification');
+        const response = await api.get('/notification', {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;

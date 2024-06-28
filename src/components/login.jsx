@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { signin, register } from '../apiServices.js';
+import Alert from './alert';
 
 const Login = () => {
     const [isRegister, setIsRegister] = useState(false);
@@ -10,6 +11,7 @@ const Login = () => {
         retypePassword: ''
     });
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
     const handleSlide = () => {
         setIsRegister(!isRegister);
@@ -20,6 +22,7 @@ const Login = () => {
             retypePassword: ''
         });
         setError('');
+        setSuccess('');
     };
 
     const handleChange = (e) => {
@@ -28,11 +31,24 @@ const Login = () => {
             ...formData,
             [name]: value
         });
+        setError('');
+        setSuccess('');
+    };
+
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email) && email.startsWith('@gmail.', email.indexOf('@'));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setSuccess('');
+
+        if (!isValidEmail(formData.email)) {
+            setError('Invalid email. Only gmail addresses are allowed.');
+            return;
+        }
 
         if (isRegister && formData.password !== formData.retypePassword) {
             setError('Passwords do not match');
@@ -42,21 +58,25 @@ const Login = () => {
         try {
             if (isRegister) {
                 await register(formData.name, formData.email, formData.password);
-                alert('Registration successful');
+                setSuccess('Registration successful');
                 handleSlide(); // Switch to login form after successful registration
             } else {
                 const response = await signin(formData.email, formData.password);
 
                 if (response.role === 'admin') {
-                    alert('Login successful as Admin');
+                    setSuccess('Login successful as Admin');
                     // Redirect to admin dashboard
-                    window.location.href = '/admin';
+                    setTimeout(() => {
+                        window.location.href = '/admin';
+                    }, 1000);
                 } else if (response.role === 'user') {
-                    alert('Login successful as User');
+                    setSuccess('Login successful as User');
                     // Redirect to user dashboard
-                    window.location.href = '/';
+                    setTimeout(() => {
+                        window.location.href = '/user';
+                    }, 1000);
                 } else {
-                    alert('Unknown role');
+                    setError('Email or Password Invalid');
                 }
             }
         } catch (err) {
@@ -70,6 +90,8 @@ const Login = () => {
                 <h2 className="text-2xl font-bold mb-4 text-center">
                     {isRegister ? 'Register' : 'Login'}
                 </h2>
+                {error && <Alert message={error} type="error" onClose={() => setError('')} />}
+                {success && <Alert message={success} type="success" onClose={() => setSuccess('')} />}
                 <form onSubmit={handleSubmit}>
                     {isRegister && (
                         <div className="mb-4">
@@ -139,7 +161,6 @@ const Login = () => {
                             />
                         </div>
                     )}
-                    {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
                     <div className="flex justify-between mt-4">
                         <button
                             type="button"

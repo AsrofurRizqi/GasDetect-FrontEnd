@@ -39,7 +39,7 @@ const Navside = ({ isOpen, toggleSidebar }) => {
                     >
                         <CiMenuBurger />
                     </button>
-                    <Link to="/admin" className="text-white text-lg font-bold">
+                    <Link to="/user" className="text-white text-lg font-bold">
                         Kuro Gas Detector
                     </Link>
                 </div>
@@ -48,7 +48,7 @@ const Navside = ({ isOpen, toggleSidebar }) => {
             {isOpen ? (
                 <div className="h-screen w-64 bg-blue-800 text-white flex flex-col p-4 fixed z-50">
                     <div className="top flex justify-between mb-8">
-                        <Link to="/admin" className="text-lg font-bold">Kuro Gas Detector</Link>
+                        <Link to="/user" className="text-lg font-bold">Kuro Gas Detector</Link>
                         <button
                             onClick={toggleSidebar}
                             className="text-white p-2 bg-blue-800 hover:bg-red-500 hover:text-white rounded-md"
@@ -57,21 +57,25 @@ const Navside = ({ isOpen, toggleSidebar }) => {
                         </button>
                     </div>
 
-                    <div onClick={() => handleLinkClick('/admin')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/user')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
                         <FaHome className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2 ">Home</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/admin/registration')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/user/profiles')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
                         <IoIosCreate className='mt-1 m-2 transition duration-200 ease-in-out' />
-                        <span className="ml-2">Registration</span>
+                        <span className="ml-2">Profiles</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/admin/users')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/user/reports')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
                         <FaUserSecret className='mt-1 m-2 transition duration-200 ease-in-out' />
-                        <span className="ml-2">User</span>
+                        <span className="ml-2">Reports</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/admin/notif')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/user/devices')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
                         <MdEditNotifications className='mt-1 m-2 transition duration-200 ease-in-out' />
-                        <span className="ml-2">Notif</span>
+                        <span className="ml-2">Devices</span>
+                    </div>
+                    <div onClick={() => handleLinkClick('/user/notif')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                        <MdEditNotifications className='mt-1 m-2 transition duration-200 ease-in-out' />
+                        <span className="ml-2">Notification</span>
                     </div>
 
                     <div onClick={handleOpenModal} className="mt-auto cursor-pointer flex">

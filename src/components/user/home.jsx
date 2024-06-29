@@ -36,3 +36,5 @@ const Home = ({ totalDevices, totalReports, totalLogs , totalEvents }) => {
         </div>
     );
 }
+
+export default Home;

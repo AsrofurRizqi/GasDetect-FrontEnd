@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Home from "../../components/user/home";
 import Banner from "../../components/banner";
 import Footer from "../../components/footer";
+const { getUserDevices, getData, getUserNotifications, donwloadData } = require("../../apiServices");
 
 const DashboardAdmin = () => {
     const [totalDevices, setTotalDevices] = useState(0);

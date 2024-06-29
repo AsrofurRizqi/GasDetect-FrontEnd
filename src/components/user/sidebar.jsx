@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaRegWindowClose } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
-import { FaHome, FaUserSecret } from "react-icons/fa";
+import { FaHome, FaMobileAlt, FaUser, FaExclamationTriangle, FaAlignJustify } from "react-icons/fa";
 import { MdEditNotifications } from "react-icons/md";
-import { IoIosCreate } from "react-icons/io";
 import ConfirmLogoutModal from '../logoutmodal';
 
 const Navside = ({ isOpen, toggleSidebar }) => {
@@ -57,23 +56,27 @@ const Navside = ({ isOpen, toggleSidebar }) => {
                         </button>
                     </div>
 
-                    <div onClick={() => handleLinkClick('/user')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/user')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
                         <FaHome className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2 ">Home</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/user/profiles')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
-                        <IoIosCreate className='mt-1 m-2 transition duration-200 ease-in-out' />
+                    <div onClick={() => handleLinkClick('/user/profiles')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
+                        <FaUser className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">Profiles</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/user/reports')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
-                        <FaUserSecret className='mt-1 m-2 transition duration-200 ease-in-out' />
+                    <div onClick={() => handleLinkClick('/user/reports')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
+                        <FaExclamationTriangle className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">Reports</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/user/devices')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
-                        <MdEditNotifications className='mt-1 m-2 transition duration-200 ease-in-out' />
+                    <div onClick={() => handleLinkClick('/user/devices')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
+                        <FaMobileAlt className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">Devices</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/user/notif')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/user/devicedata')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
+                        <FaAlignJustify className='mt-1 m-2 transition duration-200 ease-in-out' />
+                        <span className="ml-2">Device Data</span>
+                    </div>
+                    <div onClick={() => handleLinkClick('/user/notif')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
                         <MdEditNotifications className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">Notification</span>
                     </div>
@@ -93,6 +96,7 @@ const Navside = ({ isOpen, toggleSidebar }) => {
                         <CiMenuBurger />
                     </button>
                 </div>
+
             )}
 
             <ConfirmLogoutModal

@@ -4,24 +4,19 @@ const api = axios.create({
     baseURL: 'https://api.kuroshop.my.id/api',
 });
 
-export const setAuthToken = (token) => {
+export const setAuthToken = (token, role) => {
     localStorage.setItem('token', token);
+    localStorage.setItem('role', role);
 };
 
 // auth services
 export const signin = async (email, password) => {
-    console.log(email, password);
     try {
         const response = await api.post('/auth/login', { email, password });
-        console.log(response)
-        const { token } = response.data;
+        const { token, role } = response.data;
 
-        // Simpan token di localStorage
-        setAuthToken(token);
-        console.log("Token:", token);
+        setAuthToken(token, role);
         return response.data;
-
-
     } catch (error) {
         return error.response.data;
     }
@@ -108,9 +103,9 @@ export const getData = async (authToken) => {
     }
 };
 
-export const getByDevice = async (device, authToken) => {
+export const getDataByDevice = async (device, authToken) => {
     try {
-        const response = await api.get(`/data/${device}`,{
+        const response = await api.get(`/data/device/${device}`,{
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
@@ -214,6 +209,32 @@ export const getUserNotifications = async (authToken) => {
         return error.response.data;
     }
 };
+
+export const getUserNomor = async (authToken) => {
+    try {
+        const response = await api.get('/nomor', {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+export const userUpdateNumber = async (numberKey, numberValue, authToken) => {
+    try {
+        const response = await api.put(`/nomor/${numberKey}`, { number: numberValue }, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
 //get no damkar /nomor/admin/damkar menggunakan auth
 
 export const getNoDamkar = async (authToken) => {

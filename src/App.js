@@ -18,7 +18,10 @@ import VerifyUsers from "./components/admin/users/users";
 import NotifPage from "./pages/admin/notifpage";
 
 import LayoutUser from "./components/user/layout/layout";
-//import DashboardUser from "./pages/users/dashboardUsers";
+import DashboardUser from "./pages/users/dashboardUsers";
+import Profile from "./components/user/profile/profile";
+import UserDeviceData from "./components/user/device/devicedata";
+import UserNotif from "./components/user/notif/notif";
 
 import ProtectedRoute from "./components/protectedroute";
 
@@ -40,6 +43,13 @@ function App() {
           <Route path="/admin/registration" element={<ProtectedRoute element={Registration} />}/>
           <Route path="/admin/users" element={<ProtectedRoute element={VerifyUsers} />}/>
           <Route path="/admin/notif" element={<ProtectedRoute element={NotifPage} />}/>
+        </Route>
+
+        <Route  element={<LayoutUser/>}>
+          <Route path="/user" element={<ProtectedRoute element={DashboardUser} />}/>
+          <Route path="/user/profiles" element={<ProtectedRoute element={Profile} />}/>
+          <Route path="/user/notif" element={<ProtectedRoute element={UserNotif} />}/>
+          <Route path="/user/devicedata" element={<ProtectedRoute element={UserDeviceData} />}/>
         </Route>
       </Routes>  
     </Router>

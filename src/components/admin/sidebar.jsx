@@ -57,19 +57,19 @@ const Navside = ({ isOpen, toggleSidebar }) => {
                         </button>
                     </div>
 
-                    <div onClick={() => handleLinkClick('/admin')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/admin')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
                         <FaHome className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2 ">Home</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/admin/registration')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/admin/registration')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
                         <IoIosCreate className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">Registration</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/admin/users')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/admin/users')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
                         <FaUserSecret className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">User</span>
                     </div>
-                    <div onClick={() => handleLinkClick('/admin/notif')} className="cursor-pointer rounded-md flex mb-2 text-left hover:bg-white hover:text-blue-600 hover:font-bold">
+                    <div onClick={() => handleLinkClick('/admin/notif')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
                         <MdEditNotifications className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">Notif</span>
                     </div>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { signin, register } from '../apiServices.js';
+import React, { useState, useEffect } from 'react';
+import { signin, register, forgotPassword } from '../apiServices.js';
 import Alert from './alert';
 
 const Login = () => {
     const [isRegister, setIsRegister] = useState(false);
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -13,8 +14,18 @@ const Login = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    const handleSlide = () => {
-        setIsRegister(!isRegister);
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError('');
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
+    const handleSlide = (form) => {
+        setIsRegister(form === 'register');
+        setIsForgotPassword(form === 'forgotPassword');
         setFormData({
             name: '',
             email: '',
@@ -44,6 +55,24 @@ const Login = () => {
         e.preventDefault();
         setError('');
         setSuccess('');
+
+        if (isForgotPassword) {
+            if (!isValidEmail(formData.email)) {
+                setError('Invalid email. Only Gmail addresses are allowed.');
+                return;
+            }
+            try {
+                const response = await forgotPassword(formData.email);
+               if (response.status === 200) {
+                    setSuccess('Password reset email sent successfully');
+                } else {
+                    setError('Email not found');
+                }
+            } catch (err) {
+                setError(err.message);
+            }
+            return;
+        }
 
         if (!isValidEmail(formData.email)) {
             setError('Invalid email. Only gmail addresses are allowed.');
@@ -88,7 +117,7 @@ const Login = () => {
         <div className="flex justify-center items-center h-screen bg-gray-100">
             <div className="w-96 bg-white rounded-lg shadow-lg p-8">
                 <h2 className="text-2xl font-bold mb-4 text-center">
-                    {isRegister ? 'Register' : 'Login'}
+                    {isRegister ? 'Register' : isForgotPassword ? 'Forgot Password' : 'Login'}
                 </h2>
                 {error && <Alert message={error} type="error" onClose={() => setError('')} />}
                 {success && <Alert message={success} type="success" onClose={() => setSuccess('')} />}
@@ -127,22 +156,24 @@ const Login = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
                     </div>
-                    <div className="mb-6">
-                        <label
-                            htmlFor="password"
-                            className="block text-gray-700 text-sm font-bold mb-2"
-                        >
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        />
-                    </div>
+                    {!isForgotPassword && (
+                        <div className="mb-6">
+                            <label
+                                htmlFor="password"
+                                className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                                Password
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            />
+                        </div>
+                    )}
                     {isRegister && (
                         <div className="mb-6">
                             <label
@@ -162,18 +193,38 @@ const Login = () => {
                         </div>
                     )}
                     <div className="flex justify-between mt-4">
-                        <button
-                            type="button"
-                            className="text-blue-500 hover:underline"
-                            onClick={handleSlide}
-                        >
-                            {isRegister ? 'Already have an account?' : 'Create an account'}
-                        </button>
+                        {!isForgotPassword && (
+                            <>
+                                <button
+                                    type="button"
+                                    className="text-blue-500 hover:underline"
+                                    onClick={() => handleSlide(isRegister ? 'login' : 'register')}
+                                >
+                                    {isRegister ? 'Already have an account?' : 'Create an account'}
+                                </button>
+                                <button
+                                    type="button"
+                                    className="text-blue-500 hover:underline"
+                                    onClick={() => handleSlide('forgotPassword')}
+                                >
+                                    Forgot Password?
+                                </button>
+                            </>
+                        )}
+                        {isForgotPassword && (
+                            <button
+                                type="button"
+                                className="text-blue-500 hover:underline"
+                                onClick={() => handleSlide('login')}
+                            >
+                                Back to Login
+                            </button>
+                        )}
                         <button
                             type="submit"
                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                         >
-                            {isRegister ? 'Register' : 'Login'}
+                            {isRegister ? 'Register' : isForgotPassword ? 'Send Reset Email' : 'Login'}
                         </button>
                     </div>
                 </form>

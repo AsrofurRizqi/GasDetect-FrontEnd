@@ -10,8 +10,8 @@ const Profile = () => {
     password: '',
   });
 
-  // eslint-disable-next-line
   const [profileData, setProfileData] = useState({});
+  const [loading, setLoading] = useState(true); // Add loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,12 +77,23 @@ const Profile = () => {
           phone: '',
           password: '',
         });
+      } finally {
+        setLoading(false); // Once data fetching is done, set loading to false
       }
     };
     if (authToken) {
       fetchProfileData();
     }
   }, [authToken]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+        <span className="ml-4 text-blue-500">Loading Data...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">

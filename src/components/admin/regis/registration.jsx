@@ -1,36 +1,36 @@
 import React, { useEffect, useState} from "react";
 import CardUser from "./card";
+import {adminGetUsers, adminVerifyUser} from '../../../apiServices';
+import Swal from 'sweetalert2';
 
 const Registration = () => {
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage, setUsersPerPage] = useState(3);
+    const authToken = localStorage.getItem('token');
+
+  
 
     useEffect(() => {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        if (users.length === 0) {
-            // Tambahkan pengguna dummy
-            const dummyUsers = [
-                { username: 'user1', password: 'pass1', isVerified: false, email: 'email@gmail.com', phone: '081234567890', creat_at: '2021-10-10'},
-                { username: 'user2', password: 'pass2', isVerified: false,  email: 'email@gmail.com', phone: '081234567890', creat_at: '2021-10-10'},
-                { username: 'user3', password: 'pass3', isVerified: true, email: 'email@gmail.com', phone: '081234567890', creat_at: '2021-10-10'},
-                
-            ];
-            localStorage.setItem('users', JSON.stringify(dummyUsers));
-        }
-    }, []);
+        const fetchUsers = async () => {
+            try {
+                const response = await adminGetUsers(authToken);
+                setUsers(response.data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error fetching users',
+                });
+            }
+        };
 
-    useEffect(() => {
-        const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-        setUsers(storedUsers);
+        fetchUsers();
     }, []);
 
     const handleVerify = (username) => {
-        const updatedUsers = users.map(user =>
-            user.username === username ? { ...user, isVerified: true } : user
-        );
-        setUsers(updatedUsers);
-        localStorage.setItem('users', JSON.stringify(updatedUsers));
+
     };
 
     const handleUnverify = (username) => {
@@ -69,9 +69,9 @@ const Registration = () => {
     return (
         <div className="verify-users pt-16 mb-10 md:pt-0 px-2">
             <h2 className="text-2xl font-bold mb-4">Verify Users</h2>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-3 md:grid-cols-3">
                 {currentUsers.map(user => (
-                    <CardUser key={user.username} user={user} onVerify={handleVerify} onUnverify={handleUnverify} />
+                    <CardUser key={user.id} user={user} onVerify={handleVerify} onUnverify={handleUnverify} />
                 ))}
             </div>
             <div className="pagination flex justify-end mb-4">

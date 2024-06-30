@@ -291,3 +291,105 @@ export const putNoDamkar = async (authToken, nomor) => {
         return error.response.data;
     }
 };
+//admin get all users /user/admin
+export const adminGetUsers = async (authToken) => {
+    try {
+        const response = await api.get('/user/admin', {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+// admin post crete user /user/admin
+//await adminCreateUser(formData, authToken);
+export const adminCreateUser = async (formData, authToken) => {
+    try {
+        const response = await api.post('/user/admin', formData, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+//veryfy user use form user_id /user/admin/activate
+export const adminVerifyUser = async (authToken, user_id) => {
+    console.log("id", user_id);
+    console.log(authToken);
+    try {
+        const response = await api.post('/user/admin/activate', { user_id }, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+//deactivate
+export const adminDeactivateUser = async (user_id, authToken) => {
+    console.log(user_id);
+    
+    try {
+        const response = await api.post('/user/admin/deactivate', { user_id }, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+// delet user /user/admin/{id}
+export const adminDeleteUser = async (id, authToken) => {
+    try {
+        const response = await api.delete(`/user/admin/${id}`, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+// put user /user/admin/{id}
+export const adminUpdateUser = async (id, formData, authToken) => {
+    try {
+        const response = await api.put(`/user/admin/${id}`, formData, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+// get all device /device/admin
+export const adminGetDevices = async (authToken) => {
+    try {
+        const response = await api.get('/device/admin', {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

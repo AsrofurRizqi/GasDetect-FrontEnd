@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { adminUpdateUser } from '../../../apiServices';
+import Swal from 'sweetalert2';
 
-const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
+const UpdateUserModal = ({ isOpen, onClose, user }) => {
     const [formData, setFormData] = useState({
-        username: '',
         email: '',
-        phone: ''
+        password: '',
     });
 
     useEffect(() => {
         if (user) {
-            setFormData(user);
+            setFormData({
+                email: user.email || '',
+                password: '', // You might want to leave this empty for security reasons
+            });
         }
     }, [user]);
 
@@ -17,13 +21,36 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: value,
         });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onUpdate(formData);
+        const authToken = localStorage.getItem('token');
+        const updateUser = async () => {
+            try {
+                const response = await adminUpdateUser(user.id, formData, authToken);
+                if (response.message) {
+                    Swal.fire('Success', 'User updated successfully!', 'success');
+                    window.location.reload();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message || 'Error updating user',
+                    });
+                }
+            } catch (error) {
+                console.error('Error updating user:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error updating user',
+                });
+            }
+        };
+        updateUser();
         onClose();
     };
 
@@ -34,17 +61,6 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
             <div className="bg-white p-4 rounded shadow-md">
                 <h2 className="text-xl font-bold mb-4">Update User</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="username" className="block text-gray-700">Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-                        />
-                    </div>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700">Email</label>
                         <input
@@ -57,12 +73,12 @@ const UpdateUserModal = ({ isOpen, onClose, user, onUpdate }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="phone" className="block text-gray-700">Phone</label>
+                        <label htmlFor="password" className="block text-gray-700">Password</label>
                         <input
-                            type="text"
-                            id="phone"
-                            name="phone"
-                            value={formData.phone}
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                         />

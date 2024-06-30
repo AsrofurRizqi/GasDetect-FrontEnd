@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+import { adminCreateUser } from '../../../apiServices';
+import Swal from 'sweetalert2';
+const CreateUserModal = ({ isOpen, onClose}) => {
+    const [message, setMessage] = useState('');
 
-const CreateUserModal = ({ isOpen, onClose, onCreate }) => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
-        phone: ''
+        password: '',
+        phone: '',
+
     });
 
     const handleChange = (e) => {
@@ -15,17 +20,31 @@ const CreateUserModal = ({ isOpen, onClose, onCreate }) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    //adminCreateUser
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onCreate(formData);
-        onClose();
+        const authToken = localStorage.getItem('token');
+        const response = await adminCreateUser(formData, authToken);
+        setMessage(response.message);
+        if (response) {
+            Swal.fire('Success', 'User created successfully!', 'success');
+           
+            window.location.reload();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.message || 'Error creating user',
+            });
+        }
     };
+
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-4 rounded shadow-md">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center w-">
+            <div className="bg-white p-4 rounded shadow-md w-1/2">
                 <h2 className="text-xl font-bold mb-4">Create User</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -46,6 +65,17 @@ const CreateUserModal = ({ isOpen, onClose, onCreate }) => {
                             id="email"
                             name="email"
                             value={formData.email}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="password" className="block text-gray-700">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                         />

@@ -3,20 +3,49 @@ import Home from "../../components/admin/home";
 import Banner from "../../components/banner";
 import Footer from "../../components/footer";
 
+import { adminGetUsers, adminGetDevices, adminGetReports } from "../../apiServices";
+
 const DashboardAdmin = () => {
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalDevices, setTotalDevices] = useState(0);
+    console.log(totalDevices);
     const [totalReports, setTotalReports] = useState(0);
 
     useEffect(() => {
-        // Simulate fetching data from localStorage or an API
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const devices = JSON.parse(localStorage.getItem('devices')) || [];
-        const reports = JSON.parse(localStorage.getItem('reports')) || [];
+        const authToken = localStorage.getItem("token");
 
-        setTotalUsers(users.length);
-        setTotalDevices(devices.length);
-        setTotalReports(reports.length);
+        const fetchUsers = async () => {
+            try {
+                const response = await adminGetUsers(authToken);
+                //admin tidak dihitung
+                setTotalUsers(response.data.length - 1);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+
+        const fetchDevices = async () => {
+            try {
+                const response = await adminGetDevices(authToken);
+                console.log(response);
+                setTotalDevices(response.data.length);
+            } catch (error) {
+                console.error("Error fetching devices:", error);
+            }
+        };
+
+        // const fetchReports = async () => {
+        //     try {
+        //         const response = await adminGetReports(authToken);
+        //         setTotalReports(response.data.length);
+        //     } catch (error) {
+        //         console.error("Error fetching reports:", error);
+        //     }
+        // };
+
+        fetchUsers();
+        // fetchDevices();
+        // fetchReports();
     }, []);
 
     return (

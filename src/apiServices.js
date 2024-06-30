@@ -50,9 +50,9 @@ export const checkToken = async (token) => {
 }
 
 // user services
-export const changeProfile = async (name, email, password, authToken) => {
+export const changeProfile = async (username, email, phone, profile_image, authToken) => {
     try {
-        const response = await api.put('/user/profile', { name, email, password ,
+        const response = await api.put('/user/update', { username, email, phone , profile_image }, {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
@@ -78,7 +78,7 @@ export const changePassword = async (currentPassword, newPassword, authToken) =>
 
 export const getProfile = async (authToken) => {
     try {
-        const response = await api.get('/user/profile',{
+        const response = await api.get('/user/profiles',{
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
@@ -116,9 +116,22 @@ export const getDataByDevice = async (device, authToken) => {
     }
 };
 
-export const donwloadData = async (authToken) => {
+export const downloadData = async (authToken) => {
     try {
         const response = await api.get('/data/download',{
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+export const getDataGroupLocation = async (authToken) => {
+    try {
+        const response = await api.get('/data/location',{
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
@@ -159,7 +172,7 @@ export const deviceDetail = async (device,authToken) => {
 
 export const userAddDevice = async (device, authToken) => {
     try {
-        const response = await api.post('/device', { device }, {
+        const response = await api.post('/device', { device_name: device }, {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
@@ -172,7 +185,7 @@ export const userAddDevice = async (device, authToken) => {
 
 export const userUpdateDevice = async (device, name, authToken) => {
     try {
-        const response = await api.put(`/device/${device}`, { name }, {
+        const response = await api.put(`/device/${device}`, { device_name: name }, {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
@@ -199,7 +212,20 @@ export const userDeleteDevice = async (device, authToken) => {
 // notification services
 export const getUserNotifications = async (authToken) => {
     try {
-        const response = await api.get('/notification', {
+        const response = await api.get('/notif', {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+export const downloadUserNotif = async (authToken) => {
+    try {
+        const response = await api.get('/notif/download', {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
@@ -223,9 +249,9 @@ export const getUserNomor = async (authToken) => {
     }
 };
 
-export const userUpdateNumber = async (numberKey, numberValue, authToken) => {
+export const userUpdateNumber = async (data , authToken) => {
     try {
-        const response = await api.put(`/nomor/${numberKey}`, { number: numberValue }, {
+        const response = await api.put('/nomor', data, {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }
@@ -235,7 +261,6 @@ export const userUpdateNumber = async (numberKey, numberValue, authToken) => {
         return error.response.data;
     }
 }
-//get no damkar /nomor/admin/damkar menggunakan auth
 
 export const getNoDamkar = async (authToken) => {
     try {
@@ -249,8 +274,6 @@ export const getNoDamkar = async (authToken) => {
         return error.response.data;
     }
 };
-
-// put no damkar /nomor/admin/damkar menggunakan auth
 
 export const putNoDamkar = async (authToken, nomor) => {
     try {

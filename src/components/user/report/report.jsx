@@ -78,7 +78,10 @@ const DeviceDataViewer = () => {
       <h2 className='text-xl font-semibold mb-4'>Event Area</h2>
       <div className="bg-gray-200 p-4 rounded border border-blue-300">
         {loading ? (
-          <div className="text-center">Loading...</div>
+        <div className="flex items-center justify-center h-24 mt-4">
+          <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+          <span className="ml-4 text-blue-500">Loading data...</span>
+        </div>
         ) : deviceData.length > 0 ? (
           <MapContainer
             center={[-6.91173, 109.129387]}

@@ -42,7 +42,11 @@ export const forgotPassword = async (email) => {
 
 export const checkToken = async (token) => {
     try {
-        const response = await api.post('/auth/check-token', { token });
+        const response = await api.get('/auth/token-check', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         return response.data;
     } catch (error) {
         return error.response.data;

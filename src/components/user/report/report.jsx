@@ -27,7 +27,7 @@ const DeviceDataViewer = () => {
 
         const notificationResponse = await getUserNotifications(authToken);
         if (notificationResponse.status === 200) {
-          setNotifications(notificationResponse.data);
+          setNotifications(notificationResponse.data.rows);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -66,7 +66,9 @@ const DeviceDataViewer = () => {
         </div>
         ) : notifications ? (
           notifications.map((notification, index) => (
-            <div key={index} className="bg-gray-300 h-6 my-2 rounded"></div>
+            <div key={index} className="bg-gray-300 h-6 my-2 rounded">
+              <p>Status: {notification.status}  Location: {notification.location} </p>
+            </div>
           ))
         ) : (
           <div className="bg-white p-4 text-center rounded shadow">

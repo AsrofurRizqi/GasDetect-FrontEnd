@@ -106,11 +106,17 @@ const Users = () => {
                             <span className="mr-1">Phone :</span>
                             <p className="text-gray-600">{user.phone}</p>
                         </div>
+                        <div className="flex">
+                                <span className="mr-1">Activated :</span>
+                                <p className={` ${user.is_activated ? 'text-green-500' : 'text-red-500'}`}>
+                                    {user.is_activated ? 'Activated' : 'Not Activated'}
+                                </p>
+                            </div>
                         <div className="very flex justify-between">
                             <div className="flex">
-                                <span className="mr-1">Status :</span>
-                                <p className={` ${user.isVerified ? 'text-green-500' : 'text-red-500'}`}>
-                                    {user.isVerified ? 'Verified' : 'Not Verified'}
+                                <span className="mr-1">Verified :</span>
+                                <p className={` ${user.is_verified ? 'text-green-500' : 'text-red-500'}`}>
+                                    {user.is_verified ? 'Verified' : 'Not Verified'}
                                 </p>
                             </div>
                             <div>

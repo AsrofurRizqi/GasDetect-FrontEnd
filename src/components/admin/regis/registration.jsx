@@ -68,7 +68,7 @@ const Registration = () => {
 
     return (
         <div className="verify-users pt-16 mb-10 md:pt-0 px-2">
-            <h2 className="text-2xl font-bold mb-4">Verify Users</h2>
+            <h2 className="text-2xl font-bold mb-4">Verify Users Registration</h2>
             <div className="grid gap-3 md:grid-cols-3">
                 {currentUsers.map(user => (
                     <CardUser key={user.id} user={user} onVerify={handleVerify} onUnverify={handleUnverify} />

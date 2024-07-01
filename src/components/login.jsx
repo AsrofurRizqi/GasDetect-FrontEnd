@@ -86,9 +86,9 @@ const Login = () => {
 
         try {
             if (isRegister) {
-                await register(formData.name, formData.email, formData.password);
-                setSuccess('Registration successful');
-                handleSlide(); // Switch to login form after successful registration
+                await register(formData.name, formData.email, formData.password, formData.retypePassword);
+                setSuccess('Registration successful, check your email to verify');
+                setTimeout(() => { handleSlide(); }, 3000);
             } else {
                 const response = await signin(formData.email, formData.password);
 
@@ -104,7 +104,9 @@ const Login = () => {
                     setTimeout(() => {
                         window.location.href = '/user';
                     }, 1000);
-                } else {
+                } else if (response.status === 400) {
+                    setError('Please contact admin to activate your account');
+                }else {
                     setError('Email or Password Invalid');
                 }
             }

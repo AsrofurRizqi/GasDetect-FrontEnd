@@ -22,9 +22,9 @@ export const signin = async (email, password) => {
     }
 };
 
-export const register = async (name, email, password) => {
+export const register = async (name, email, password, repassword) => {
     try {
-        const response = await api.post('/auth/register', { name, email, password });
+        const response = await api.post('/auth/register', { nama: name, email, password, repassword });
         return response.data;
     } catch (error) {
         return error.response.data;
@@ -384,6 +384,20 @@ export const adminUpdateUser = async (id, formData, authToken) => {
 export const adminGetDevices = async (authToken) => {
     try {
         const response = await api.get('/device/admin', {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
+// get all reports /report/admin
+export const adminGetReports = async (authToken) => {
+    try {
+        const response = await api.get('/notif/admin', {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }

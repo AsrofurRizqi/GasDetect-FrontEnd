@@ -8,32 +8,32 @@ const CardUser = ({ user }) => {
     const handleVerifyClick = () => {
         Swal.fire({
             title: 'Are you sure?',
-            text: `You are about to verify ${user.username}. This action cannot be undone.`,
+            text: `You are about to activate ${user.username}`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, verify it!'
+            confirmButtonText: 'Yes, activate it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     const response = await adminVerifyUser(authToken, user.id);
                     if (response.message) {
-                        Swal.fire('Success', `${user.username} has been verified.`, 'success');
+                        Swal.fire('Success', `${user.username} has been activated.`, 'success');
                         window.location.reload();
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: response.message || 'Error verifying user',
+                            text: response.message || 'Error activating user',
                         });
                     }
                 } catch (error) {
-                    console.error('Error verifying user:', error);
+                    console.error('Error activating user:', error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Error verifying user',
+                        text: 'Error activating user',
                     });
                 }
             }
@@ -43,12 +43,12 @@ const CardUser = ({ user }) => {
     const handleUnverifyClick = () => {
         Swal.fire({
             title: 'Are you sure?',
-            text: `You are about to unverify ${user.username}. This action cannot be undone.`,
+            text: `You are about to deactivate ${user.username}`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, unverify it!'
+            confirmButtonText: 'Yes, deactivate it!'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -101,14 +101,14 @@ const CardUser = ({ user }) => {
                         onClick={handleUnverifyClick}
                         className="mt-2 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
                     >
-                        Unverify
+                        Deactivate
                     </button>
                 ) : (
                     <button
                         onClick={handleVerifyClick}
                         className="mt-2 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
                     >
-                        Verify
+                        Activate
                     </button>
                 )}
             </div>

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Home from "../../components/admin/home";
-import Banner from "../../components/banner";
-import Footer from "../../components/footer";
 
 import { adminGetUsers, adminGetDevices, adminGetReports } from "../../apiServices";
 
@@ -34,27 +32,29 @@ const DashboardAdmin = () => {
             }
         };
 
-        // const fetchReports = async () => {
-        //     try {
-        //         const response = await adminGetReports(authToken);
-        //         setTotalReports(response.data.length);
-        //     } catch (error) {
-        //         console.error("Error fetching reports:", error);
-        //     }
-        // };
+        const fetchReports = async () => {
+            try {
+                const response = await adminGetReports(authToken);
+                setTotalReports(response.data.count);
+            } catch (error) {
+                console.error("Error fetching reports:", error);
+            }
+        };
 
         fetchUsers();
-        // fetchDevices();
-        // fetchReports();
+        fetchDevices();
+        fetchReports();
     }, []);
 
     return (
         <div className="dashboard">
+            <div className="justify-center p-4">
+                    <h1 className="text-2xl font-semibold text-center">Welcome</h1>
+                    <h1 className="text-2xl font-semibold text-center">Admin Dashboard</h1>
+                </div>
             <div className="content h-screen">
                 <Home totalUsers={totalUsers} totalDevices={totalDevices} totalReports={totalReports} />
             </div>
-            <Banner />
-            <Footer />
         </div>
     );
 }

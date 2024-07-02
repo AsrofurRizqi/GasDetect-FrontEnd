@@ -229,10 +229,11 @@ export const getUserNotifications = async (authToken) => {
 
 export const downloadUserNotif = async (authToken) => {
     try {
-        const response = await api.get('/notif/download', {
+        const response = await api.get('/notif/download-report', {
             headers: {
                 Authorization: `Bearer ${authToken}`
-            }
+            },
+            responseType: 'blob'
         });
         return response.data;
     } catch (error) {

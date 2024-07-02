@@ -9,12 +9,14 @@ const Users = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [loading, setLoading] = useState(true);
     const authToken = localStorage.getItem('token');
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const response = await adminGetUsers(authToken);
                 setUsers(response.data);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching users:', error);
                 Swal.fire({
@@ -22,6 +24,7 @@ const Users = () => {
                     title: 'Error',
                     text: 'Error fetching users',
                 });
+                setLoading(false);
             }
         };
 
@@ -91,6 +94,12 @@ const Users = () => {
             >
                 Create User
             </button>
+            {loading ? ( // Conditionally render loading animation
+            <div className="flex items-center justify-center h-24 mt-4">
+              <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+              <span className="ml-4 text-blue-500">Loading data...</span>
+            </div>
+          ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {users.filter(user => user.role !== 'admin').map(user => (
                     <div key={user.id} className="bg-gray-300 shadow-md rounded-md p-4 border border-blue-500">
@@ -141,6 +150,7 @@ const Users = () => {
                 ))}
                 
             </div>
+            )}
             <CreateUserModal
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}

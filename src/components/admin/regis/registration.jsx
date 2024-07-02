@@ -7,6 +7,7 @@ const Registration = () => {
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage, setUsersPerPage] = useState(3);
+    const [loading, setLoading] = useState(true);
     const authToken = localStorage.getItem('token');
 
   
@@ -16,6 +17,7 @@ const Registration = () => {
             try {
                 const response = await adminGetUsers(authToken);
                 setUsers(response.data);
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching users:', error);
                 Swal.fire({
@@ -23,6 +25,7 @@ const Registration = () => {
                     title: 'Error',
                     text: 'Error fetching users',
                 });
+                setLoading(false);
             }
         };
 
@@ -68,25 +71,41 @@ const Registration = () => {
 
     return (
         <div className="verify-users pt-16 mb-10 md:pt-0 px-2">
-            <h2 className="text-2xl font-bold mb-4">Verify Users Registration</h2>
+          <h2 className="text-2xl font-bold mb-4 mt-4">Verify Users Registration</h2>
+          {loading ? ( // Conditionally render loading animation
+            <div className="flex items-center justify-center h-24 mt-4">
+              <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+              <span className="ml-4 text-blue-500">Loading data...</span>
+            </div>
+          ) : (
             <div className="grid gap-3 md:grid-cols-3">
-                {currentUsers.map(user => (
-                    <CardUser key={user.id} user={user} onVerify={handleVerify} onUnverify={handleUnverify} />
-                ))}
+              {currentUsers.map((user) => (
+                <CardUser
+                  key={user.id}
+                  user={user}
+                  onVerify={handleVerify}
+                  onUnverify={handleUnverify}
+                />
+              ))}
             </div>
-            <div className="pagination flex justify-end mb-4">
-                {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                        key={index + 1}
-                        onClick={() => handlePageChange(index + 1)}
-                        className={`mb-2 px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-            </div>
+          )}
+          <div className="pagination flex justify-end mb-4">
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`mb-2 px-4 py-2 mx-1 rounded ${
+                  currentPage === index + 1
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300 text-black"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
         </div>
-    );
+      );
 }
 
 export default Registration;

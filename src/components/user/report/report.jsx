@@ -43,9 +43,12 @@ const DeviceDataViewer = () => {
 
   const handleDownloadReport = async () => {
     try {
-      await downloadUserNotif(authToken);
+      const pdf = await downloadUserNotif(authToken);
+      const blobUrl = window.URL.createObjectURL(pdf)
+      window.open(blobUrl);
+
     } catch (error) {
-      console.error('Error downloading report:', error);
+        console.error('Error downloading report:', error);
     }
   };
 

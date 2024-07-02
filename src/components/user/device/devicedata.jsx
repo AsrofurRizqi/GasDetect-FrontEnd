@@ -96,8 +96,8 @@ const DeviceDataViewer = () => {
             {currentItems.map((data, index) => (
               <div key={index} className="bg-white p-4 rounded-md shadow-md mb-4 border border-blue-300">
                 <p><strong>Location:</strong> {data.location.join(', ')}</p>
-                <p><strong>Device Time:</strong> {new Date(data.timestamp).toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hourCycle: 'h23' })}</p>
-                <p><strong>Server Time:</strong> {new Date(data.createdAt).toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hourCycle: 'h23' })}</p>
+                <p><strong>Device Time:</strong> {new Date(data.timestamp).toLocaleString('en-US', { hourCycle: 'h23' })}</p>
+                <p><strong>Server Time:</strong> {new Date(data.createdAt).toLocaleString('en-US', { timeZone: 'Asia/Jakarta', hourCycle: 'h23' })}</p>
                 <p><strong>PPM:</strong> {data.ppm}</p>
                 <p><strong>Temperature:</strong> {data.temperature}°C</p>
                 <p><strong>Humidity:</strong> {data.humidity}</p>

@@ -93,7 +93,7 @@ const Users = () => {
             </button>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {users.filter(user => user.role !== 'admin').map(user => (
-                    <div key={user.id} className="bg-gray-300 shadow-md rounded-md p-4">
+                    <div key={user.id} className="bg-gray-300 shadow-md rounded-md p-4 border border-blue-500">
                         <div className="top flex justify-between">
                             <h2 className="text-lg font-semibold">{user.username}</h2>
                             <span className="text-gray-600">{user.created_at}</span>

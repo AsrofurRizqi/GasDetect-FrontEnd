@@ -54,9 +54,9 @@ export const checkToken = async (token) => {
 }
 
 // user services
-export const changeProfile = async (username, email, phone, profile_image, authToken) => {
+export const changeProfile = async (authToken, updateData) => {
     try {
-        const response = await api.put('/user/update', { username, email, phone , profile_image }, {
+        const response = await api.put('/user/update', updateData , {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }

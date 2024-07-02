@@ -9,9 +9,11 @@ const Profile = () => {
     phone: '',
     password: '',
   });
-
+  const [profileImage, setProfileImage] = useState(null);
   const [profileData, setProfileData] = useState({});
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,16 +26,26 @@ const Profile = () => {
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     try {
-      const updatedData = { ...formData };
-      if (!updatedData.password) {
-        delete updatedData.password; // Remove password if it's not being updated
+      const updatedData = new FormData();
+      updatedData.append('name', formData.name);
+      updatedData.append('email', formData.email);
+      updatedData.append('phone', formData.phone);
+      if (profileImage) {
+        updatedData.append('profile_image', profileImage);
+      }
+      if (formData.password) {
+        updatedData.append('password', formData.password);
       }
       await changeProfile(authToken, updatedData);
-      alert('Profile updated successfully!');
-      setFormData({ ...formData, password: '' }); // Clear the password field after updating
+      setAlertMessage('Profile updated successfully!');
+      setAlertType('success');
+      setFormData({ ...formData, password: '' });
+      setProfileImage(null);
+      fetchProfileData(); // Fetch updated profile data
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Failed to update profile.');
+      setAlertMessage('Failed to update profile.');
+      setAlertType('error');
     }
   };
 
@@ -42,45 +54,52 @@ const Profile = () => {
     try {
       if (formData.password) {
         await changePassword(authToken, formData.password);
-        alert('Password changed successfully!');
-        setFormData({ ...formData, password: '' }); // Clear the password field after updating
+        setAlertMessage('Password changed successfully!');
+        setAlertType('success');
+        setFormData({ ...formData, password: '' });
       } else {
-        alert('Please enter a new password.');
+        setAlertMessage('Please enter a new password.');
+        setAlertType('error');
       }
     } catch (error) {
       console.error('Error changing password:', error);
-      alert('Failed to change password.');
+      setAlertMessage('Failed to change password.');
+      setAlertType('error');
     }
   };
 
   const handleProfileImageChange = (e) => {
-    // Logic for updating profile image
+    const file = e.target.files[0];
+    if (file) {
+      setProfileImage(file);
+    }
+  };
+
+  const fetchProfileData = async () => {
+    try {
+      const response = await getProfile(authToken);
+      setProfileData(response.data);
+      setFormData({
+        name: response.data.username,
+        email: response.data.email,
+        phone: response.data.phone,
+        password: '',
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setProfileData({});
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      try {
-        const response = await getProfile(authToken);
-        setProfileData(response.data);
-        setFormData({
-          name: response.data.username,
-          email: response.data.email,
-          phone: response.data.phone,
-          password: '',
-        });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setProfileData({});
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          password: '',
-        });
-      } finally {
-        setLoading(false); // Once data fetching is done, set loading to false
-      }
-    };
     if (authToken) {
       fetchProfileData();
     }
@@ -100,6 +119,11 @@ const Profile = () => {
       <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8 flex flex-col md:flex-row">
         <div className="w-full md:w-2/3 pr-0 md:pr-8 mb-8 md:mb-0">
           <h2 className="text-2xl font-bold mb-4">Change Profile Data</h2>
+          {alertMessage && (
+            <div className={`mb-4 p-4 rounded ${alertType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+              {alertMessage}
+            </div>
+          )}
           <form onSubmit={handleProfileUpdate}>
             <div className="mb-4">
               <label
@@ -149,6 +173,21 @@ const Profile = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
+            <div className="mb-4">
+              <label
+                htmlFor="profile_image"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
+                Profile Image
+              </label>
+              <input
+                type="file"
+                id="profile_image"
+                name="profile_image"
+                onChange={handleProfileImageChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
             <div className="mb-4 flex items-center">
               <input
                 type="password"
@@ -175,18 +214,16 @@ const Profile = () => {
           </form>
         </div>
         <div className="w-full md:w-1/3 flex flex-col items-center">
-          <div className="w-48 h-48 rounded-full border border-blue-500 flex items-center justify-center mb-4">
-            {/* Profile Image Placeholder */}
-            <svg className="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-            </svg>
+          <div className="w-48 h-48 rounded-full border border-blue-500 flex items-center justify-center mb-4 overflow-hidden">
+            {profileData.profile_image ? (
+
+              <img src={`https://api.kuroshop.my.id/${profileData.profile_image}`} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              <svg className="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+              </svg>
+            )}
           </div>
-          <button
-            onClick={handleProfileImageChange}
-            className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded w-full md:w-auto"
-          >
-            Update Profile Image
-          </button>
         </div>
       </div>
     </div>

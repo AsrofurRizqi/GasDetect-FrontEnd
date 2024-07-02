@@ -76,7 +76,7 @@ const CardUser = ({ user }) => {
     };
 
     return (
-        <div className="bg-gray-300 w-full shadow-md rounded-md p-2 mb-4">
+        <div className="bg-gray-300 w-full shadow-md rounded-md p-2 mb-4 border border-blue-500">
             <div className="top flex justify-between">
                 <h2 className="text-lg font-semibold">{user.username}</h2>
                 <span className="text-gray-600">{user.created_at}</span>

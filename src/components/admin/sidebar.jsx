@@ -2,10 +2,11 @@ import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaRegWindowClose } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
-import { FaHome, FaUserSecret } from "react-icons/fa";
+import { FaHome, FaUser } from "react-icons/fa";
 import { MdEditNotifications } from "react-icons/md";
 import { IoIosCreate } from "react-icons/io";
 import ConfirmLogoutModal from '../logoutmodal';
+import { FaUserClock } from 'react-icons/fa6';
 
 const Navside = ({ isOpen, toggleSidebar }) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -66,7 +67,7 @@ const Navside = ({ isOpen, toggleSidebar }) => {
                         <span className="ml-2">Registration</span>
                     </div>
                     <div onClick={() => handleLinkClick('/admin/users')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
-                        <FaUserSecret className='mt-1 m-2 transition duration-200 ease-in-out' />
+                        <FaUserClock className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">User</span>
                     </div>
                     <div onClick={() => handleLinkClick('/admin/notif')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">

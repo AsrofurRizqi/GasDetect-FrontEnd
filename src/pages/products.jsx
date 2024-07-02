@@ -1,14 +1,42 @@
 import React from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
+import ProductCard from "../components/productcard";
 
-const AboutPage = () => {
+const products = [
+    {
+        id: 1,
+        name: "LPG Gas Detector",
+        description: "This is a great product that detects gas.",
+        price: "29.99",
+        image: "https://via.placeholder.com/150"
+    },
+    {
+        id: 2,
+        name: "LPG Gas Detector KIT",
+        description: "This is a great product that detects carbon monoxide.",
+        price: "39.99",
+        image: "https://via.placeholder.com/150"
+    }
+];
+
+const ProductPage = () => {
     return (
-        <div>
+        <div className="flex flex-col min-h-screen">
             <Navbar />
+            <div className="flex-grow p-4 bg-gray-100">
+                <h1 className="text-3xl font-bold text-center mb-8">Our Products</h1>
+                <div className="container mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {products.map((product) => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
+                </div>
+            </div>
             <Footer />
         </div>
     );
-}
+};
 
-export default AboutPage;
+export default ProductPage;

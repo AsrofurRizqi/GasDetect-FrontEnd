@@ -5,12 +5,12 @@ const WhyUs = () => {
   const features = [
     {
       title: "Safe and Secured",
-      description: "Tim kami menjamin website anda selalu aman dan terjamin",
+      description: "Tim kami menjamin data anda selalu aman dan terjamin",
       icon: ChooseUs,
     },
     {
       title: "99.5% Uptime Guarantee",
-      description: "Uptime sampai dengan 99,5% tanpa gangguan. Test kecepatan",
+      description: "Uptime sampai dengan 99,5% tanpa gangguan. ",
       icon: ChooseUs,
     },
     {
@@ -20,7 +20,7 @@ const WhyUs = () => {
     },
     {
       title: "High Performance",
-      description: "Server kami memberikan performa tinggi untuk website anda.",
+      description: "Server kami memberikan performa yang tinggi.",
       icon: ChooseUs,
     },
     {

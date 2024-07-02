@@ -30,7 +30,7 @@ const About = () => {
       </div>
       <div>
         <p className="text-lg">
-          Welcome to our company! We are dedicated to providing the best service possible. Our office is located at a prime spot in the city, making it easy for us to serve our clients effectively. With a team of highly skilled professionals, we strive to exceed expectations and deliver top-notch solutions. Thank you for choosing us!
+          
         </p>
       </div>
     </div>

@@ -91,7 +91,6 @@ const Login = () => {
                 setTimeout(() => { handleSlide(); }, 3000);
             } else {
                 const response = await signin(formData.email, formData.password);
-
                 if (response.role === 'admin') {
                     setSuccess('Login successful as Admin');
                     // Redirect to admin dashboard
@@ -104,6 +103,10 @@ const Login = () => {
                     setTimeout(() => {
                         window.location.href = '/user';
                     }, 1000);
+                } else if (response.message === "Account not found") {
+                    setError('invalid account');
+                } else if (response.message === "Password not match") {
+                    setError('Invalid password');
                 } else if (response.status === 400) {
                     setError('Please contact admin to activate your account');
                 }else {

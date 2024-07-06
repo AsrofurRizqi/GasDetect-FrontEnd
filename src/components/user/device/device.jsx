@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import {
   getUserDevices,
   userDeleteDevice,
@@ -22,6 +23,9 @@ const KeyModal = ({ show, onClose, urlKey }) => {
         <h2 className="text-lg mb-2 text-center">Device Created</h2>
         <p className="mb-4">Setting this key on device initialization:</p>
         <div className="bg-gray-200 p-2 rounded mb-4">{urlKey}</div>
+        <div className="flex justify-center mb-4">
+          <QRCodeSVG value={urlKey} size={128} />
+        </div>
         <button
           onClick={onClose}
           className="bg-blue-500 text-white p-2 rounded w-full"

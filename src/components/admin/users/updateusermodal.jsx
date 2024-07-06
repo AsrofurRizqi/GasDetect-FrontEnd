@@ -12,7 +12,7 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
         if (user) {
             setFormData({
                 email: user.email || '',
-                password: '', // You might want to leave this empty for security reasons
+                password: '',
             });
         }
     }, [user]);

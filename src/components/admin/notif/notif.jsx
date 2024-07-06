@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 const Notif = () => {
     const [noDamkar, setNoDamkar] = useState('');
     const [formData, setFormData] = useState({ nomor: '' });
+    const [loading, setLoading] = useState(true);  // Added state for loading
     const authToken = localStorage.getItem('token');
 
     useEffect(() => {
@@ -19,6 +20,8 @@ const Notif = () => {
                     title: 'Error',
                     text: 'Error fetching data',
                 });
+            } finally {
+                setLoading(false);  // Set loading to false after fetching
             }
         };
 
@@ -53,7 +56,6 @@ const Notif = () => {
                 text: 'Error updating number',
             });
         }
-        
     };
 
     const handleChange = (e) => {
@@ -63,26 +65,33 @@ const Notif = () => {
     return (
         <div className="mt-20 md:mt-8 px-2">
             <h2 className="text-2xl font-bold mb-4 flex justify-center">Admin Damkar Settings</h2>
-            <form onSubmit={handleSubmit} className="bg-slate-400 p-4 rounded shadow-md max-w-md mx-auto">
-                <div className="mb-4">
-                    <label htmlFor="no_damkar" className="block text-gray-700">Number</label>
-                    <input
-                        type="number"
-                        placeholder={noDamkar}
-                        id="no_damkar"
-                        name="no_damkar"
-                        value={formData.nomor}
-                        onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    />
+            {loading ? (
+                <div className="flex items-center justify-center h-24 mt-4">
+                    <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+                    <span className="ml-4 text-blue-500">Loading data...</span>
                 </div>
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                >
-                    Update
-                </button>
-            </form>
+            ) : (
+                <form onSubmit={handleSubmit} className="bg-slate-400 p-4 rounded shadow-md max-w-md mx-auto">
+                    <div className="mb-4">
+                        <label htmlFor="no_damkar" className="block text-gray-700">Number</label>
+                        <input
+                            type="number"
+                            placeholder={noDamkar}
+                            id="no_damkar"
+                            name="no_damkar"
+                            value={formData.nomor}
+                            onChange={handleChange}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                    >
+                        Update
+                    </button>
+                </form>
+            )}
         </div>
     );
 }

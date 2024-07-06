@@ -44,7 +44,7 @@ const CreateUserModal = ({ isOpen, onClose}) => {
 
     return (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center w-">
-            <div className="bg-white p-4 rounded shadow-md w-1/2">
+            <div className="bg-white p-4 rounded shadow-md w-1/2 border border-blue-500">
                 <h2 className="text-xl font-bold mb-4">Create User</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">

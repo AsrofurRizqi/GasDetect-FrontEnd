@@ -12,11 +12,6 @@ const Navbar = () => {
                 <Link to="/about" className="text-white ml-4">About</Link>
                 <Link to="/contact" className="text-white ml-4">Contact</Link>
                 <Link to="/products" className="text-white ml-4 mr-4">Products</Link>
-                {/* <Link to="/data" className="text-white ml-4 mr-4">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-                        Data
-                    </button>
-                </Link> */}
                 <Link to="/login" className="text-white ">
                     <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
                         Login

@@ -89,7 +89,7 @@ const Registration = () => {
               ))}
             </div>
           )}
-          <div className="pagination flex justify-end mb-4">
+          <div className="pagination flex justify-center mb-4 ">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}

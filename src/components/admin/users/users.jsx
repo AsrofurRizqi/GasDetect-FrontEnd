@@ -49,14 +49,14 @@ const Users = () => {
     //adminDeleteUser
     const handleDeleteUser = (id, username) => {
         Swal.fire({
-            title: 'Apakah kamu yakin?',
-            text: `Anda akan menghapus ${username}. Tindakan ini tidak dapat dibatalkan.`,
+            title: 'Are you sure?',
+            text: `This will delete user ${username}. this action cannot be revert.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            cancelButtonText: 'Batal',
-            confirmButtonText: 'Ya, hapus!'
+            cancelButtonText: 'No',
+            confirmButtonText: 'Yes'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {

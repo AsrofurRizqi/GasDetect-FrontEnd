@@ -6,7 +6,6 @@ import { adminGetUsers, adminGetDevices, adminGetReports } from "../../apiServic
 const DashboardAdmin = () => {
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalDevices, setTotalDevices] = useState(0);
-    console.log(totalDevices);
     const [totalReports, setTotalReports] = useState(0);
 
     useEffect(() => {
@@ -15,8 +14,7 @@ const DashboardAdmin = () => {
         const fetchUsers = async () => {
             try {
                 const response = await adminGetUsers(authToken);
-                //admin tidak dihitung
-                setTotalUsers(response.data.length - 1);
+                setTotalUsers(response.data.length);
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
@@ -25,7 +23,6 @@ const DashboardAdmin = () => {
         const fetchDevices = async () => {
             try {
                 const response = await adminGetDevices(authToken);
-                console.log(response);
                 setTotalDevices(response.data.length);
             } catch (error) {
                 console.error("Error fetching devices:", error);

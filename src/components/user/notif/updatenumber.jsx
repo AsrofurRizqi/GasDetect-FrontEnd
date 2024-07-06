@@ -45,7 +45,7 @@ const ManageNotificationNumbers = ({ initialData }) => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8">
+      <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8 border border-blue-300">
         <h2 className="text-2xl mb-4">Manage Notification Numbers</h2>
         {successMessage && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">

@@ -13,7 +13,7 @@ const CardUser = ({ user }) => {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, activate it!'
+            confirmButtonText: 'Yes'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -48,7 +48,7 @@ const CardUser = ({ user }) => {
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, deactivate it!'
+            confirmButtonText: 'Yes'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {

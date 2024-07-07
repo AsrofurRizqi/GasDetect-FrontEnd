@@ -13,6 +13,16 @@ const Login = () => {
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const authToken = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
+    if (authToken) {
+        if (role === 'admin') {
+            window.location.href = '/admin';
+        } else if (role === 'user') {
+            window.location.href = '/user';
+        }
+    }
 
     useEffect(() => {
         if (error) {

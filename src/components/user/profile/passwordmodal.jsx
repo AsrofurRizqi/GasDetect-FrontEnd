@@ -5,7 +5,7 @@ const PasswordChangeModal = ({ isOpen, onClose, onSubmit, formData, handleChange
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md border border-blue-300">
         <h2 className="text-2xl font-bold mb-4">Change Password</h2>
         <form onSubmit={onSubmit}>
           <div className="mb-4">

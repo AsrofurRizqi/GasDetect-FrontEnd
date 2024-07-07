@@ -47,7 +47,7 @@ const Navside = ({ isOpen, toggleSidebar }) => {
             {isOpen ? (
                 <div className="h-screen w-64 bg-blue-800 text-white flex flex-col p-4 fixed z-50">
                     <div className="top flex justify-between mb-8">
-                        <Link to="/user" className="text-lg font-bold">Kuro Gas Detector</Link>
+                        <Link to="/" className="text-lg font-bold">Kuro Gas Detector</Link>
                         <button
                             onClick={toggleSidebar}
                             className="text-white p-2 bg-blue-800 hover:bg-red-500 hover:text-white rounded-md"

@@ -156,7 +156,7 @@ const Device = () => {
               <div>
                 <h3>Nama: {device.deviceName}</h3>
                 <p>Device Number: {device.deviceNumber}</p>
-                <p>Active: {device.active ? "Yes" : "No"}</p>
+                <p>Created: {new Date(device.createdAt).toLocaleString()}</p>
               </div>
               <div>
                 <button

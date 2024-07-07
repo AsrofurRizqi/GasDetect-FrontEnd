@@ -12,6 +12,7 @@ const customicon = new L.Icon({
 });
 
 const DeviceDataViewer = () => {
+  // eslint-disable-next-line
   const [deviceData, setDeviceData] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -120,7 +121,7 @@ const DeviceDataViewer = () => {
             <div className="w-16 h-16 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
             <span className="ml-4 text-blue-500">Loading data...</span>
           </div>
-        ) : deviceData.length > 0 ? (
+        ) : notifications.data  ? (
           <MapContainer
             center={[-6.91173, 109.129387]}
             zoom={12}
@@ -130,10 +131,10 @@ const DeviceDataViewer = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            {deviceData.map((device, index) => (
-              <Marker key={index} position={device.location} icon={customicon}>
+            {notifications.data.rows.map((device, index) => (
+              <Marker key={index} position={device.location.split(",")} icon={customicon}>
                 <Popup>
-                  <pre>{JSON.stringify(device.location.join(','), null, 2)}</pre>
+                  <pre>{JSON.stringify(device.location, null, 2)}</pre>
                 </Popup>
               </Marker>
             ))}

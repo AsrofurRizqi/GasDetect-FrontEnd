@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getProfile, changeProfile, changePassword } from '../../../apiServices';
+import PasswordChangeModal from './passwordmodal';
 
 const Profile = () => {
   const authToken = localStorage.getItem('token');
@@ -7,13 +8,16 @@ const Profile = () => {
     name: '',
     email: '',
     phone: '',
-    password: '',
+    oldpassword: '',
+    newpassword: '',
+    renewpassword: '',
   });
   const [profileImage, setProfileImage] = useState(null);
   const [profileData, setProfileData] = useState({});
   const [loading, setLoading] = useState(true);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState('');
+  const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,14 +37,9 @@ const Profile = () => {
       if (profileImage) {
         updatedData.append('profile_image', profileImage);
       }
-      if (formData.password) {
-        updatedData.append('password', formData.password);
-      }
       await changeProfile(authToken, updatedData);
       setAlertMessage('Profile updated successfully!');
       setAlertType('success');
-      setFormData({ ...formData, password: '' });
-      setProfileImage(null);
       fetchProfileData(); // Fetch updated profile data
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -52,13 +51,29 @@ const Profile = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     try {
-      if (formData.password) {
-        await changePassword(authToken, formData.password);
-        setAlertMessage('Password changed successfully!');
-        setAlertType('success');
-        setFormData({ ...formData, password: '' });
+      if (!formData.oldpassword || !formData.newpassword || !formData.renewpassword) {
+        setAlertMessage('Please fill all fields.');
+        setAlertType('error');
+        return;
+      }
+      if (formData.newpassword === formData.renewpassword) {
+        const responses = await changePassword(authToken, formData.oldpassword, formData.newpassword, formData.renewpassword);
+        if (responses.status === 200) {
+          setAlertMessage('Password changed successfully!');
+          setAlertType('success');
+          setPasswordModalOpen(false);
+          setFormData({
+            ...formData,
+            oldpassword: '',
+            newpassword: '',
+            renewpassword: '',
+          });
+        } else {
+          setAlertMessage('Password change failed. Please check your old password.');
+          setAlertType('error');
+        }
       } else {
-        setAlertMessage('Please enter a new password.');
+        setAlertMessage('New passwords do not match.');
         setAlertType('error');
       }
     } catch (error) {
@@ -83,7 +98,9 @@ const Profile = () => {
         name: response.data.username,
         email: response.data.email,
         phone: response.data.phone,
-        password: '',
+        oldpassword: '',
+        newpassword: '',
+        renewpassword: '',
       });
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -92,7 +109,9 @@ const Profile = () => {
         name: '',
         email: '',
         phone: '',
-        password: '',
+        oldpassword: '',
+        newpassword: '',
+        renewpassword: '',
       });
     } finally {
       setLoading(false);
@@ -126,12 +145,7 @@ const Profile = () => {
           )}
           <form onSubmit={handleProfileUpdate}>
             <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Name
-              </label>
+              <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Name</label>
               <input
                 type="text"
                 id="name"
@@ -142,12 +156,7 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Email
-              </label>
+              <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
               <input
                 type="email"
                 id="email"
@@ -158,12 +167,7 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="phone"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Phone
-              </label>
+              <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2">Phone</label>
               <input
                 type="text"
                 id="phone"
@@ -174,12 +178,7 @@ const Profile = () => {
               />
             </div>
             <div className="mb-4">
-              <label
-                htmlFor="profile_image"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Profile Image
-              </label>
+              <label htmlFor="profile_image" className="block text-gray-700 text-sm font-bold mb-2">Profile Image</label>
               <input
                 type="file"
                 id="profile_image"
@@ -188,35 +187,18 @@ const Profile = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
-            <div className="mb-4 flex items-center">
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2 w-full md:w-auto"
-                placeholder="Change Password"
-              />
-              <button
-                onClick={handlePasswordChange}
-                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded"
-              >
-                Change
-              </button>
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full md:w-auto"
-            >
-              Update Profile
-            </button>
+            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full md:w-auto">Update Profile</button>
           </form>
+          <button
+            onClick={() => setPasswordModalOpen(true)}
+            className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded mt-4"
+          >
+            Change Password
+          </button>
         </div>
         <div className="w-full md:w-1/3 flex flex-col items-center">
           <div className="w-48 h-48 rounded-full border border-blue-500 flex items-center justify-center mb-4 overflow-hidden">
             {profileData.profile_image ? (
-
               <img src={`https://api.kuroshop.my.id/${profileData.profile_image}`} alt="Profile" className="w-full h-full object-cover" />
             ) : (
               <svg className="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -226,6 +208,13 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <PasswordChangeModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+        onSubmit={handlePasswordChange}
+        formData={formData}
+        handleChange={handleChange}
+      />
     </div>
   );
 };

@@ -67,9 +67,9 @@ export const changeProfile = async (authToken, updateData) => {
     }
 };
 
-export const changePassword = async (currentPassword, newPassword, authToken) => {
+export const changePassword = async (authToken, oldpassword, newpassword, renewpassword) => {
     try {
-        const response = await api.put('/user/password', { currentPassword, newPassword,
+        const response = await api.post('/auth/user-change-password', { oldpassword, newpassword, renewpassword }, {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }

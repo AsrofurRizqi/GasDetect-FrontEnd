@@ -66,7 +66,7 @@ const Login = () => {
                if (response.status === 200) {
                     setSuccess('Password reset email sent successfully');
                 } else {
-                    setError('Email not found');
+                    setError('Account Not Found');
                 }
             } catch (err) {
                 setError(err.message);

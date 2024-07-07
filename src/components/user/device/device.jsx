@@ -24,7 +24,7 @@ const KeyModal = ({ show, onClose, urlKey }) => {
         <p className="mb-4">Setting this key on device initialization:</p>
         <div className="bg-gray-200 p-2 rounded mb-4">{urlKey}</div>
         <div className="flex justify-center mb-4">
-          <QRCodeSVG value={urlKey} size={128} />
+          <QRCodeSVG value={`http://192.168.4.1/wifi?key=${urlKey}`} size={128} level="Q" className="border-2 border-gray-400" />
         </div>
         <button
           onClick={onClose}

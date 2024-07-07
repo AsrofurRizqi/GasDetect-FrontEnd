@@ -107,6 +107,8 @@ const Login = () => {
                     setError('invalid account');
                 } else if (response.message === "Password not match") {
                     setError('Invalid password');
+                } else if (response.message === "Please fill all field") {
+                    setError('Please fill all field');
                 } else if (response.status === 400) {
                     setError('Please contact admin to activate your account');
                 }else {

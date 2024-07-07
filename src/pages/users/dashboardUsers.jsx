@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Home from "../../components/user/home";
-import { getUserDevices, getData, getUserNotifications, downloadData } from "../../apiServices";
+import { getUserDevices, getData, getUserNotifications } from "../../apiServices";
 
 const DashboardAdmin = () => {
     const [totalDevices, setTotalDevices] = useState(0);
@@ -16,12 +16,12 @@ const DashboardAdmin = () => {
                 const devicesResponse = await getUserDevices(authToken);
                 const logsResponse = await getData(authToken);
                 const reportsResponse = await getUserNotifications(authToken);
-                //const eventsResponse = await downloadData(authToken);
+                const criticalReports = reportsResponse.data ? reportsResponse.data.rows.filter(report => report.status === "Critical").length : 0;
 
                 setTotalDevices(devicesResponse.data.length || 0);
                 setTotalReports(reportsResponse.data ? reportsResponse.data.count : 0);
                 setTotalLogs(logsResponse.data ? logsResponse.data.count : 0);
-                setTotalEvents(0);
+                setTotalEvents(criticalReports);
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setTotalDevices(0);

@@ -13,9 +13,9 @@ const officeIcon = new L.Icon({
 
 const About = () => {
   return (
-    <div className="container mx-auto py-12">
-      <h2 className="text-3xl font-bold text-center mb-8">About Us</h2>
-      <div className="mb-8">
+    <div className="container mx-auto py-12 mt-5">
+      <h2 className="text-3xl font-bold text-center mb-12">About Us</h2>
+      <div className="mb-12">
         <MapContainer center={[-6.91173,109.129387]} zoom={13} style={{ height: "400px", width: "100%" }}>
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

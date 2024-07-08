@@ -9,14 +9,14 @@ const products = [
         name: "LPG Gas Detector",
         description: "This is a great product that detects gas.",
         price: "29.99",
-        image: "https://via.placeholder.com/150"
+        image: "https://res.cloudinary.com/dkxt6mlnh/image/upload/v1720408711/ta/m4yyngdgc1dj5tobdwej.jpg"
     },
     {
         id: 2,
         name: "LPG Gas Detector KIT",
         description: "This is a great product that detects carbon monoxide.",
         price: "39.99",
-        image: "https://via.placeholder.com/150"
+        image: "https://res.cloudinary.com/dkxt6mlnh/image/upload/v1720408711/ta/dv4xvzu6nbgjrhvfbf0j.jpg"
     }
 ];
 

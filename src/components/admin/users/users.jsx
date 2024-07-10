@@ -87,7 +87,7 @@ const Users = () => {
 
     return (
         <div className="users pt-16 mb-10 md:pt-0 px-2">
-            <h2 className="text-2xl font-bold mb-4">Users</h2>
+            <h2 className="text-2xl font-bold mb-4">User Management</h2>
             <button
                 onClick={() => setIsCreateModalOpen(true)}
                 className="bg-blue-500 text-white py-2 px-4 rounded mb-4"

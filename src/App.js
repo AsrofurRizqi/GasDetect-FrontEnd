@@ -13,6 +13,7 @@ import LayoutAdmin from "./components/admin/layout/layout";
 import DashboardAdmin from "./pages/admin/dashboardAdmin";
 import Registration from "./components/admin/regis/registration";
 import VerifyUsers from "./components/admin/users/users";
+import Report from "./components/admin/report/report";
 import NotifPage from "./pages/admin/notifpage";
 
 import LayoutUser from "./components/user/layout/layout";
@@ -42,6 +43,7 @@ function App() {
           <Route path="/admin" element={<ProtectedRoute element={DashboardAdmin} />}/>
           <Route path="/admin/registration" element={<ProtectedRoute element={Registration} />}/>
           <Route path="/admin/users" element={<ProtectedRoute element={VerifyUsers} />}/>
+          <Route path="/admin/report" element={<ProtectedRoute element={Report} />}/>
           <Route path="/admin/notif" element={<ProtectedRoute element={NotifPage} />}/>
         </Route>
 

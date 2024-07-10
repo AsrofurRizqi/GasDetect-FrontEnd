@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaRegWindowClose } from "react-icons/fa";
+import { FaRegWindowClose, FaExclamationTriangle } from "react-icons/fa";
 import { CiMenuBurger } from "react-icons/ci";
-import { FaHome, FaUser } from "react-icons/fa";
+import { FaHome} from "react-icons/fa";
 import { MdEditNotifications } from "react-icons/md";
 import { IoIosCreate } from "react-icons/io";
 import ConfirmLogoutModal from '../logoutmodal';
@@ -69,6 +69,10 @@ const Navside = ({ isOpen, toggleSidebar }) => {
                     <div onClick={() => handleLinkClick('/admin/users')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
                         <FaUserClock className='mt-1 m-2 transition duration-200 ease-in-out' />
                         <span className="ml-2">User</span>
+                    </div>
+                    <div onClick={() => handleLinkClick('/admin/report')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
+                        <FaExclamationTriangle className='mt-1 m-2 transition duration-200 ease-in-out' />
+                        <span className="ml-2">Reports</span>
                     </div>
                     <div onClick={() => handleLinkClick('/admin/notif')} className="cursor-pointer rounded-md bg-white flex mb-2 text-left text-blue-600 hover:bg-blue-600 hover:text-white hover:font-bold">
                         <MdEditNotifications className='mt-1 m-2 transition duration-200 ease-in-out' />

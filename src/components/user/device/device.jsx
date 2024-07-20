@@ -95,7 +95,7 @@ const Device = () => {
       const response = await tailGetData(authToken, deviceNumber);
       const updatedDevices = devices.map((device) => {
         if (device.deviceNumber === deviceNumber) {
-          return { ...device, ppm: response.data[0].ppm };
+          return { ...device, ppm: response.data ? response.data[0].ppm : 0 };
         }
         return device;
       });
@@ -191,7 +191,7 @@ const Device = () => {
                     minValue={0}
                     maxValue={100}
                     styles={buildStyles({
-                      pathColor: `rgba(30 , 64, 175, 0.99, ${device.ppm ? device.ppm / 200 : 0})`,
+                      pathColor: `rgba(30 , 64, 175, 0.99, ${device.ppm / 200})`,
                       textColor: '#000',
                       textSize: '16px',
                       trailColor: '#d6d6d6',

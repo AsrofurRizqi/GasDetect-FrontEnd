@@ -67,6 +67,10 @@ const Login = () => {
         setSuccess('');
 
         if (isForgotPassword) {
+            if (!formData.email) {
+                setError('Please fill email field');
+                return;
+            }
             if (!isValidEmail(formData.email)) {
                 setError('Invalid email. Only Gmail addresses are allowed.');
                 return;
@@ -84,6 +88,11 @@ const Login = () => {
             return;
         }
 
+        if (!formData.email || !formData.password) {
+            setError('Please fill all fields');
+            return;
+        }
+
         if (!isValidEmail(formData.email)) {
             setError('Invalid email. Only gmail addresses are allowed.');
             return;
@@ -96,9 +105,24 @@ const Login = () => {
 
         try {
             if (isRegister) {
-                await register(formData.name, formData.email, formData.password, formData.retypePassword);
-                setSuccess('Registration successful, check your email to verify');
-                setTimeout(() => { handleSlide(); }, 3000);
+                if (!formData.name) {
+                    setError('Please fill name field');
+                    return;
+                }
+                const regis = await register(formData.name, formData.email, formData.password, formData.retypePassword);
+
+                if (regis.status === 200) {
+                    setSuccess('Registration successful, check your email to verify');
+                    setTimeout(() => { handleSlide(); }, 3000);
+                } else if (regis.message === "Email already used") {
+                    setError('Email already exist');
+                } else if (regis.message === "Password not match") {
+                    setError('Password not match');
+                } else if (regis.message === "Please fill all field") {
+                    setError('Please fill all field');
+                } else {
+                    setError('Registration failed');
+                }
             } else {
                 const response = await signin(formData.email, formData.password);
                 if (response.role === 'admin') {

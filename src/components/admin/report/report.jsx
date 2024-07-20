@@ -112,7 +112,7 @@ const DeviceDataViewer = () => {
             {notifications.data.rows.map((device, index) => (
               <Marker key={index} position={device.location.split(",")} icon={customicon}>
                 <Popup>
-                  <pre>{device.user_notification.username} / {device.location} / {device.status} </pre>
+                  <pre>{device.user_notification.username}|{device.location}|{device.status}|{new Date(device.createdAt).toLocaleDateString()}</pre>
                 </Popup>
               </Marker>
             ))}

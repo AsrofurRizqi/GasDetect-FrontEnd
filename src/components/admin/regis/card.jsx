@@ -93,7 +93,7 @@ const CardUser = ({ user }) => {
                 <div className="flex">
                     <span className="mr-1">Status :</span>
                     <p className={`${user.is_activated ? 'text-green-500' : 'text-red-500'}`}>
-                        {user.is_activated ? 'Activate' : 'Deactivate'}
+                        {user.is_activated ? 'Activated' : 'Deactive'}
                     </p>
                 </div>
                 {user.is_activated ? (

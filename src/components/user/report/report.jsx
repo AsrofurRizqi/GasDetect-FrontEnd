@@ -134,7 +134,7 @@ const DeviceDataViewer = () => {
             {notifications.data.rows.map((device, index) => (
               <Marker key={index} position={device.location.split(",")} icon={customicon}>
                 <Popup>
-                  <pre>{JSON.stringify(device.location, null, 2)}</pre>
+                  <pre>{device.location}|{device.status}|{new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Jakarta', dateStyle: 'short', timeStyle: 'short', hourCycle: 'h23' }).format(new Date(device.createdAt))}</pre>
                 </Popup>
               </Marker>
             ))}

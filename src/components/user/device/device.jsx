@@ -4,8 +4,11 @@ import {
   getUserDevices,
   userDeleteDevice,
   userAddDevice,
-  userUpdateDevice
+  userUpdateDevice,
+  tailGetData // Import the tailGetData function
 } from "../../../apiServices";
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 const Spinner = () => (
   <div className="flex items-center justify-center h-24 mt-4">
@@ -71,11 +74,35 @@ const Device = () => {
     fetchDevices(authToken);
   }, [authToken]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      devices.forEach((device) => {
+        fetchCurrentPPM(device.deviceNumber);
+      });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [devices]);
+
   const fetchDevices = async (authToken) => {
     setLoading(true);
     const response = await getUserDevices(authToken);
     setDevices(response.data);
     setLoading(false);
+  };
+
+  const fetchCurrentPPM = async (deviceNumber) => {
+    try {
+      const response = await tailGetData(authToken, deviceNumber);
+      const updatedDevices = devices.map((device) => {
+        if (device.deviceNumber === deviceNumber) {
+          return { ...device, ppm: response.data[0].ppm };
+        }
+        return device;
+      });
+      setDevices(updatedDevices);
+    } catch (error) {
+      console.error("Error fetching current PPM value", error);
+    }
   };
 
   const handleCreateDevice = async () => {
@@ -157,6 +184,21 @@ const Device = () => {
                 <h3>Nama: {device.deviceName}</h3>
                 <p>Device Number: {device.deviceNumber}</p>
                 <p>Created: {new Date(device.createdAt).toLocaleString()}</p>
+                <div className="mt-2 w-32 h-32">
+                  <CircularProgressbar
+                    value={device.ppm || 0}
+                    text={`${device.ppm || 0} PPM`}
+                    minValue={0}
+                    maxValue={100}
+                    styles={buildStyles({
+                      pathColor: `rgba(30 , 64, 175, 0.99, ${device.ppm / 200})`,
+                      textColor: '#000',
+                      textSize: '16px',
+                      trailColor: '#d6d6d6',
+                      backgroundColor: '#3e98c7',
+                    })}
+                  />
+                </div>
               </div>
               <div>
                 <button

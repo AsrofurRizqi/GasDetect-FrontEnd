@@ -146,6 +146,19 @@ export const getDataGroupLocation = async (authToken) => {
     }
 };
 
+export const tailGetData = async (authToken, device) => {
+    try {
+        const response = await api.get(`/data/taildata/${device}`,{
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
 // device services
 export const getUserDevices = async (authToken) => {
     try {

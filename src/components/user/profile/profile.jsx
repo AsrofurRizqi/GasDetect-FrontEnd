@@ -31,7 +31,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const updatedData = new FormData();
-      updatedData.append('name', formData.name);
+      updatedData.append('username', formData.name);
       updatedData.append('email', formData.email);
       updatedData.append('phone', formData.phone);
       if (profileImage) {

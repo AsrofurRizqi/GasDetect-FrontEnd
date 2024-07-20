@@ -191,7 +191,7 @@ const Device = () => {
                     minValue={0}
                     maxValue={100}
                     styles={buildStyles({
-                      pathColor: `rgba(30 , 64, 175, 0.99, ${device.ppm / 200})`,
+                      pathColor: `rgba(30 , 64, 175, 0.99, ${device.ppm ? device.ppm / 200 : 0})`,
                       textColor: '#000',
                       textSize: '16px',
                       trailColor: '#d6d6d6',

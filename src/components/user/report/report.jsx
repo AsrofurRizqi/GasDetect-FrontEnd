@@ -61,7 +61,7 @@ const DeviceDataViewer = () => {
   const currentItems = notifications.data?.rows.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <div className="p-4">
+    <div className="p-4 md:pt-0 pt-16">
       <div className="flex justify-between items-center mb-4">
         <h2 className='text-xl font-semibold mb-4'>Event History</h2>
         <button

@@ -54,7 +54,7 @@ const DeviceDataViewer = () => {
   const currentItems = deviceData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <div className="p-6 bg-gray-100 rounded-md shadow-md">
+    <div className="p-6 bg-gray-100 rounded-md shadow-md md:pt-0 pt-16">
       <h2 className="text-xl font-semibold mb-4">View Device Data</h2>
       {loadingDevices ? (
         <div className="flex items-center justify-center h-24">

@@ -134,8 +134,8 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8 flex flex-col md:flex-row border border-blue-300">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 pt-16 md:pt-0">
+      <div className="w-full max-w-6xl bg-white rounded-lg shadow-lg p-8 flex flex-col md:flex-row border border-blue-300 mt-12">
         <div className="w-full md:w-2/3 pr-0 md:pr-8 mb-8 md:mb-0">
           <h2 className="text-2xl font-bold mb-4">Change Profile Data</h2>
           {alertMessage && (

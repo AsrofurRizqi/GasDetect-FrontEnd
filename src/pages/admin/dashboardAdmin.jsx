@@ -44,7 +44,7 @@ const DashboardAdmin = () => {
     }, []);
 
     return (
-        <div className="dashboard">
+        <div className="dashboard md:pt-0 pt-16">
             <div className="justify-center p-4">
                     <h1 className="text-2xl font-semibold text-center">Welcome</h1>
                     <h1 className="text-2xl font-semibold text-center">Admin Dashboard</h1>

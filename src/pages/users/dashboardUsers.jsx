@@ -48,7 +48,7 @@ const DashboardAdmin = () => {
     return (
         <div className="dashboard">
             <div className="content h-screen">
-                <div className="justify-center p-4">
+                <div className="justify-center p-4 md:pt-0 pt-16">
                     <h1 className="text-2xl font-semibold text-center">Welcome</h1>
                     <h1 className="text-2xl font-semibold text-center">User Dashboard</h1>
                 </div>

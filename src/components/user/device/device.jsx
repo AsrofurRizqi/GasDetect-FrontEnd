@@ -109,7 +109,7 @@ const Device = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 md:pt-0 pt-16">
       <h1 className="text-xl font-semibold mb-4">Device Management</h1>
       <button
         onClick={() => setShowCreateModal(true)}

@@ -95,7 +95,7 @@ const Device = () => {
       const response = await tailGetData(authToken, deviceNumber);
       const updatedDevices = devices.map((device) => {
         if (device.deviceNumber === deviceNumber) {
-          return { ...device, ppm: response.data ? response.data[0].ppm : 0 };
+          return { ...device, ppm: response.data[0] ? response.data[0].ppm : 0 };
         }
         return device;
       });

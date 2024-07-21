@@ -32,7 +32,7 @@ const DashboardAdmin = () => {
         const fetchReports = async () => {
             try {
                 const response = await adminGetReports(authToken);
-                setTotalReports(response.data.count);
+                setTotalReports(response.data ? response.data.count : 0);
             } catch (error) {
                 console.error("Error fetching reports:", error);
             }

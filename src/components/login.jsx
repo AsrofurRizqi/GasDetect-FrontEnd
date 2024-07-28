@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { signin, register, forgotPassword } from '../apiServices.js';
 import Alert from './alert';
+import QrScanner from 'react-qr-scanner';
 
 const Login = () => {
     const [isRegister, setIsRegister] = useState(false);
@@ -8,11 +9,15 @@ const Login = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        phone: '',
         password: '',
         retypePassword: ''
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [qrCodeValue, setQrCodeValue] = useState('');
+    const [qrScanError, setQrScanError] = useState('');
+    const [isQrScannerOpen, setIsQrScannerOpen] = useState(false);
     const authToken = localStorage.getItem('token');
     const role = localStorage.getItem('role');
 
@@ -39,11 +44,14 @@ const Login = () => {
         setFormData({
             name: '',
             email: '',
+            phone: '',
             password: '',
             retypePassword: ''
         });
         setError('');
         setSuccess('');
+        setQrCodeValue('');
+        setQrScanError('');
     };
 
     const handleChange = (e) => {
@@ -77,7 +85,7 @@ const Login = () => {
             }
             try {
                 const response = await forgotPassword(formData.email);
-               if (response.status === 200) {
+                if (response.status === 200) {
                     setSuccess('Password reset email sent successfully');
                 } else {
                     setError('Account Not Found');
@@ -105,21 +113,27 @@ const Login = () => {
 
         try {
             if (isRegister) {
-                if (!formData.name) {
+                if (!formData.name || !formData.phone) {
                     setError('Please fill name field');
                     return;
                 }
-                const regis = await register(formData.name, formData.email, formData.password, formData.retypePassword);
+                const regis = await register(formData.name, formData.email, formData.password, formData.retypePassword, formData.phone, qrCodeValue);
 
                 if (regis.status === 200) {
                     setSuccess('Registration successful, check your email to verify');
                     setTimeout(() => { handleSlide(); }, 3000);
-                } else if (regis.message === "Email already used") {
+                } else if (regis.message === "Account already exist") {
                     setError('Email already exist');
                 } else if (regis.message === "Password not match") {
                     setError('Password not match');
-                } else if (regis.message === "Please fill all field") {
+                } else if (regis.message === "All field is required") {
                     setError('Please fill all field');
+                } else if (regis.message === "Phone number not valid") {
+                    setError('Invalid phone number');
+                } else if (regis.message === "Device already registered on other account") {
+                    setError('Device already registered on other account');
+                } else if (regis.message === "Email not accepted or not valid") {
+                    setError('Invalid email');
                 } else {
                     setError('Registration failed');
                 }
@@ -127,13 +141,11 @@ const Login = () => {
                 const response = await signin(formData.email, formData.password);
                 if (response.role === 'admin') {
                     setSuccess('Login successful as Admin');
-                    // Redirect to admin dashboard
                     setTimeout(() => {
                         window.location.href = '/admin';
                     }, 1000);
                 } else if (response.role === 'user') {
                     setSuccess('Login successful as User');
-                    // Redirect to user dashboard
                     setTimeout(() => {
                         window.location.href = '/user';
                     }, 1000);
@@ -145,13 +157,25 @@ const Login = () => {
                     setError('Please fill all field');
                 } else if (response.status === 400) {
                     setError('Please contact admin to activate your account');
-                }else {
+                } else {
                     setError('Email or Password Invalid');
                 }
             }
         } catch (err) {
             setError(err.message);
         }
+    };
+
+    const handleScan = (data) => {
+        if (data) {
+            setQrCodeValue(data.text);
+            setQrScanError('');
+            setIsQrScannerOpen(false);
+        }
+    };
+
+    const handleError = (err) => {
+        setQrScanError('Error scanning Device Code');
     };
 
     return (
@@ -197,6 +221,24 @@ const Login = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
                     </div>
+                    {isRegister && (
+                        <div className="mb-4">
+                            <label
+                                htmlFor="phone"
+                                className="block text-gray-700 text-sm font-bold mb-2"
+                            >
+                                Phone
+                            </label>
+                            <input
+                                type="text"
+                                id="phone"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            />
+                        </div>
+                    )}
                     {!isForgotPassword && (
                         <div className="mb-6">
                             <label
@@ -231,6 +273,32 @@ const Login = () => {
                                 onChange={handleChange}
                                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             />
+                        </div>
+                    )}
+                    {!isForgotPassword && isRegister && (
+                        <div className="mb-6">
+                            <label className="block text-gray-700 text-sm font-bold mb-2">Device Code</label>
+                            <div className="flex">
+                                <button
+                                    type="button"
+                                    className="w-1/2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-l"
+                                    onClick={() => setIsQrScannerOpen(!isQrScannerOpen)}
+                                >
+                                    {isQrScannerOpen ? 'Close Qr Scan' : 'Open Qr Scan'}
+                                </button>
+                                {isQrScannerOpen && (
+                                    <div className="w-1/2">
+                                        <QrScanner
+                                            delay={300}
+                                            onError={handleError}
+                                            onScan={handleScan}
+                                            style={{ width: '100%' }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                            {qrCodeValue && <p className="text-green-500 mt-2">Device Code : {qrCodeValue}</p>}
+                            {qrScanError && <p className="text-red-500 mt-2">{qrScanError}</p>}
                         </div>
                     )}
                     <div className="flex justify-between mt-4">

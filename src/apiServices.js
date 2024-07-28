@@ -22,9 +22,9 @@ export const signin = async (email, password) => {
     }
 };
 
-export const register = async (name, email, password, repassword) => {
+export const register = async (name, email, password, repassword, phone, qrcode) => {
     try {
-        const response = await api.post('/auth/register', { nama: name, email, password, repassword });
+        const response = await api.post('/auth/register', { nama: name, email, password, repassword , phone, qr_code: qrcode });
         return response.data;
     } catch (error) {
         return error.response.data;
@@ -187,9 +187,9 @@ export const deviceDetail = async (device,authToken) => {
     }
 };
 
-export const userAddDevice = async (device, authToken) => {
+export const userAddDevice = async (device, qr_code, authToken) => {
     try {
-        const response = await api.post('/device', { device_name: device }, {
+        const response = await api.post('/device', { device_name: device, urlkey: qr_code }, {
             headers: {
                 Authorization: `Bearer ${authToken}`
             }

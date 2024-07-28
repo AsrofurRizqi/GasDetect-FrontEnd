@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { QRCodeSVG } from "qrcode.react";
 import {
   getUserDevices,
   userDeleteDevice,
@@ -9,6 +8,7 @@ import {
 } from "../../../apiServices";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import QrScanner from 'react-qr-scanner';
 
 const Spinner = () => (
   <div className="flex items-center justify-center h-24 mt-4">
@@ -17,18 +17,14 @@ const Spinner = () => (
   </div>
 );
 
-const KeyModal = ({ show, onClose, urlKey }) => {
+const SuccessModal = ({ show, onClose }) => {
   if (!show) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="bg-white p-4 rounded shadow-md w-80">
-        <h2 className="text-lg mb-2 text-center">Device Created</h2>
-        <p className="mb-4">Setting this key on device initialization:</p>
-        <div className="bg-gray-200 p-2 rounded mb-4">{urlKey}</div>
-        <div className="flex justify-center mb-4">
-          <QRCodeSVG value={`http://192.168.4.1/wifi?key=${urlKey}`} size={128} level="Q" className="border-2 border-gray-400" />
-        </div>
+        <h2 className="text-lg mb-2 text-center">Success</h2>
+        <p className="mb-4 text-center">The device has been created successfully!</p>
         <button
           onClick={onClose}
           className="bg-blue-500 text-white p-2 rounded w-full"
@@ -59,14 +55,36 @@ const ErrorModal = ({ show, onClose, errorMessage }) => {
   );
 };
 
+const FailedModal = ({ show, onClose }) => {
+  if (!show) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div className="bg-white p-4 rounded shadow-md w-80">
+        <h2 className="text-lg mb-2 text-red-600 text-center">Failed</h2>
+        <p className="mb-4 text-center">Device key already used.</p>
+        <button
+          onClick={onClose}
+          className="bg-red-500 text-white p-2 rounded w-full"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Device = () => {
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newDeviceName, setNewDeviceName] = useState("");
+  const [qrCode, setQrCode] = useState("");
+  const [showQrScanner, setShowQrScanner] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [currentDevice, setCurrentDevice] = useState(null);
-  const [urlKey, setUrlKey] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showFailedModal, setShowFailedModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const authToken = localStorage.getItem("token");
 
@@ -106,12 +124,18 @@ const Device = () => {
   };
 
   const handleCreateDevice = async () => {
+    if (!newDeviceName || !qrCode) {
+      setErrorMessage("All fields must be filled.");
+      return;
+    }
     try {
-      const response = await userAddDevice(newDeviceName, authToken);
-      if (response.status === 400) {
+      const response = await userAddDevice(newDeviceName, qrCode, authToken);
+      if (response.status === 400 && response.message === 'Device key already used') {
+        setShowFailedModal(true);
+      } else if (response.status === 400) {
         setErrorMessage(response.message);
       } else {
-        setUrlKey(response.key);
+        setShowSuccessModal(true);
         fetchDevices(authToken);
       }
     } catch (error) {
@@ -119,6 +143,8 @@ const Device = () => {
     }
     setShowCreateModal(false);
     setNewDeviceName("");
+    setQrCode("");
+    setShowQrScanner(false);
   };
 
   const handleDeleteDevice = async (deviceId) => {
@@ -127,12 +153,23 @@ const Device = () => {
   };
 
   const handleUpdateDevice = async () => {
-    const response = await userUpdateDevice(currentDevice.id, newDeviceName, authToken);
-    setUrlKey(response.urlKey);
+    await userUpdateDevice(currentDevice.id, newDeviceName, authToken);
+    setShowSuccessModal(true);
     fetchDevices(authToken);
     setShowUpdateModal(false);
     setCurrentDevice(null);
     setNewDeviceName("");
+  };
+
+  const handleScan = (data) => {
+    if (data) {
+      setQrCode(data.text);
+      setShowQrScanner(false);
+    }
+  };
+
+  const handleError = (err) => {
+    console.error(err);
   };
 
   return (
@@ -147,7 +184,7 @@ const Device = () => {
 
       {showCreateModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white p-4 rounded shadow-md">
+          <div className="bg-white p-4 rounded shadow-md w-full max-w-md">
             <h2 className="text-lg mb-2 text-center">Create Device</h2>
             <input
               type="text"
@@ -156,6 +193,31 @@ const Device = () => {
               className="border p-2 mb-2 w-full border-blue-300"
               placeholder="Device Name"
             />
+            <div className="flex items-center mb-2">
+              <input
+                type="text"
+                value={qrCode}
+                onChange={(e) => setQrCode(e.target.value)}
+                className="border p-2 w-full border-blue-300"
+                placeholder="Device Code"
+              />
+              <button
+                onClick={() => setShowQrScanner(!showQrScanner)}
+                className="bg-blue-500 text-white p-2 rounded ml-2"
+              >
+                {showQrScanner ? 'Close Camera' : 'Scan QR'}
+              </button>
+            </div>
+            {showQrScanner && (
+              <div className="mb-2 flex justify-center">
+                <QrScanner
+                  delay={300}
+                  onError={handleError}
+                  onScan={handleScan}
+                  style={{ width: '100%', maxWidth: '300px' }}
+                />
+              </div>
+            )}
             <button
               onClick={handleCreateDevice}
               className="bg-green-500 text-white p-2 rounded"
@@ -164,7 +226,7 @@ const Device = () => {
             </button>
             <button
               onClick={() => setShowCreateModal(false)}
-              className="bg-red-500 text-white p-2 rounded ml-2 mx-auto "
+              className="bg-red-500 text-white p-2 rounded ml-2"
             >
               Cancel
             </button>
@@ -250,7 +312,8 @@ const Device = () => {
         </div>
       )}
 
-      <KeyModal show={!!urlKey} onClose={() => setUrlKey(null)} urlKey={urlKey} />
+      <SuccessModal show={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
+      <FailedModal show={showFailedModal} onClose={() => setShowFailedModal(false)} />
       <ErrorModal show={!!errorMessage} onClose={() => setErrorMessage(null)} errorMessage={errorMessage} />
     </div>
   );

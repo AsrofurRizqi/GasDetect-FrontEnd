@@ -215,7 +215,7 @@ const Device = () => {
                   onError={handleError}
                   onScan={handleScan}
                   style={{ width: '100%', maxWidth: '300px' }}
-                  facingMode="rear"
+                  facingMode="environment"
                 />
               </div>
             )}

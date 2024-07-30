@@ -293,7 +293,7 @@ const Login = () => {
                                             onError={handleError}
                                             onScan={handleScan}
                                             style={{ width: '100%' }}
-                                            facingMode="rear"
+                                            facingMode="environment"
                                         />
                                     </div>
                                 )}

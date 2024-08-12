@@ -6,6 +6,7 @@ import QrScanner from 'react-qr-scanner';
 const Login = () => {
     const [isRegister, setIsRegister] = useState(false);
     const [isForgotPassword, setIsForgotPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -117,26 +118,34 @@ const Login = () => {
                     setError('Please fill name field');
                     return;
                 }
-                const regis = await register(formData.name, formData.email, formData.password, formData.retypePassword, formData.phone, qrCodeValue);
+                setIsLoading(true);
+                try {
+                    const regis = await register(formData.name, formData.email, formData.password, formData.retypePassword, formData.phone, qrCodeValue);
 
-                if (regis.status === 200) {
-                    setSuccess('Registration successful, check your email to verify');
-                    setTimeout(() => { handleSlide(); }, 3000);
-                } else if (regis.message === "Account already exist") {
-                    setError('Email already exist');
-                } else if (regis.message === "Password not match") {
-                    setError('Password not match');
-                } else if (regis.message === "All field is required") {
-                    setError('Please fill all field');
-                } else if (regis.message === "Phone number not valid") {
-                    setError('Invalid phone number');
-                } else if (regis.message === "Device already registered on other account") {
-                    setError('Device already registered on other account');
-                } else if (regis.message === "Email not accepted or not valid") {
-                    setError('Invalid email');
-                } else {
-                    setError('Registration failed');
+                    if (regis.status === 200) {
+                        setSuccess('Registration successful, check your email to verify');
+                        setTimeout(() => { handleSlide(); }, 3000);
+                    } else if (regis.message === "Account already exist") {
+                        setError('Email already exist');
+                    } else if (regis.message === "Password not match") {
+                        setError('Password not match');
+                    } else if (regis.message === "All field is required") {
+                        setError('Please fill all field');
+                    } else if (regis.message === "Phone number not valid") {
+                        setError('Invalid phone number');
+                    } else if (regis.message === "Device already registered on other account") {
+                        setError('Device already registered on other account');
+                    } else if (regis.message === "Email not accepted or not valid") {
+                        setError('Invalid email');
+                    } else {
+                        setError('Registration failed');
+                    }
+                } catch (err) {
+                    setError(err.message);
+                } finally {
+                    setIsLoading(false);
                 }
+                return;
             } else {
                 const response = await signin(formData.email, formData.password);
                 if (response.role === 'admin') {
@@ -333,8 +342,16 @@ const Login = () => {
                         <button
                             type="submit"
                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                            disabled={isLoading}
                         >
-                            {isRegister ? 'Register' : isForgotPassword ? 'Send Reset Email' : 'Login'}
+                            {isRegister && !isLoading ? 'Register' : null }
+                            {isForgotPassword ? 'Send Reset Email' : null}
+                            {!isRegister && !isForgotPassword ? 'Login' : null}
+                            {isLoading ? (
+                                <div className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full"></div>
+                            ) : 
+                                null
+                            }
                         </button>
                     </div>
                 </form>

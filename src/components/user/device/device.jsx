@@ -4,7 +4,8 @@ import {
   userDeleteDevice,
   userAddDevice,
   userUpdateDevice,
-  tailGetData // Import the tailGetData function
+  tailGetData,
+  updateInterval
 } from "../../../apiServices";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -74,9 +75,29 @@ const FailedModal = ({ show, onClose }) => {
   );
 };
 
+const IntervalSuccessModal = ({ show, onClose }) => {
+  if (!show) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div className="bg-white p-4 rounded shadow-md w-80">
+        <h2 className="text-lg mb-2 text-center">Success</h2>
+        <p className="mb-4 text-center">Interval successfully changed!</p>
+        <button
+          onClick={onClose}
+          className="bg-blue-500 text-white p-2 rounded w-full"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Device = () => {
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedFetchInterval, setSelectedFetchInterval] = useState(5000);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newDeviceName, setNewDeviceName] = useState("");
   const [qrCode, setQrCode] = useState("");
@@ -85,6 +106,7 @@ const Device = () => {
   const [currentDevice, setCurrentDevice] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailedModal, setShowFailedModal] = useState(false);
+  const [showIntervalSuccessModal, setShowIntervalSuccessModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const authToken = localStorage.getItem("token");
 
@@ -97,9 +119,9 @@ const Device = () => {
       devices.forEach((device) => {
         fetchCurrentPPM(device.deviceNumber);
       });
-    }, 5000);
+    }, selectedFetchInterval);
     return () => clearInterval(interval);
-  }, [devices]);
+  }, [devices, selectedFetchInterval]);
 
   const fetchDevices = async (authToken) => {
     setLoading(true);
@@ -172,15 +194,42 @@ const Device = () => {
     console.error(err);
   };
 
+  const handleIntervalChange = async (device, newInterval) => {
+    try {
+      await updateInterval(device.id, newInterval, authToken);
+      const updatedDevices = devices.map((d) =>
+        d.deviceNumber === device.deviceNumber ? { ...d, interval: newInterval } : d
+      );
+      setDevices(updatedDevices);
+      setShowIntervalSuccessModal(true);
+    } catch (error) {
+      console.error("Error updating interval", error);
+    }
+  };
+
   return (
     <div className="p-4 md:pt-0 pt-16">
       <h1 className="text-xl font-semibold mb-4">Device Management</h1>
-      <button
-        onClick={() => setShowCreateModal(true)}
-        className="bg-blue-500 text-white p-2 rounded"
-      >
-        Create Device
-      </button>
+      <div className="flex items-center mb-4">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="bg-blue-500 text-white p-2 rounded"
+        >
+          Create Device
+        </button>
+        <label className="block mb-0 ml-2 text-sm font-semibold mr-2">PPM Refresh:</label>
+        <select
+          value={selectedFetchInterval}
+          onChange={(e) => setSelectedFetchInterval(parseInt(e.target.value))}
+          className="border p-2 rounded bg-blue-500 text-white"
+        >
+          {[5000, 10000, 15000, 20000, 25000, 30000].map((value) => (
+            <option key={value} value={value}>
+              {value / 1000} seconds
+            </option>
+          ))}
+        </select>
+      </div>
 
       {showCreateModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -262,6 +311,20 @@ const Device = () => {
                     })}
                   />
                 </div>
+                <div className="mt-2">
+                  <label className="block mb-1 text-sm">Device Send Interval:</label>
+                  <select
+                    value={device.interval || 10}
+                    onChange={(e) => handleIntervalChange(device, parseInt(e.target.value))}
+                    className="border p-2 rounded w-full"
+                  >
+                    {[5, 10, 15, 20, 25, 30].map((value) => (
+                      <option key={value} value={value}>
+                        {value} seconds
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div>
                 <button
@@ -316,6 +379,7 @@ const Device = () => {
       <SuccessModal show={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
       <FailedModal show={showFailedModal} onClose={() => setShowFailedModal(false)} />
       <ErrorModal show={!!errorMessage} onClose={() => setErrorMessage(null)} errorMessage={errorMessage} />
+      <IntervalSuccessModal show={showIntervalSuccessModal} onClose={() => setShowIntervalSuccessModal(false)} />
     </div>
   );
 };

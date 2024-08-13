@@ -348,7 +348,7 @@ const Login = () => {
                             {isForgotPassword ? 'Send Reset Email' : null}
                             {!isRegister && !isForgotPassword ? 'Login' : null}
                             {isLoading ? (
-                                <div className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full"></div>
+                                <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></div>
                             ) : 
                                 null
                             }

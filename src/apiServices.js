@@ -226,6 +226,19 @@ export const userDeleteDevice = async (device, authToken) => {
     }
 };
 
+export const updateInterval = async (device, interval, authToken) => {
+    try {
+        const response = await api.put(`/device/interval/${device}`, { interval }, {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}
+
 // notification services
 export const getUserNotifications = async (authToken) => {
     try {
